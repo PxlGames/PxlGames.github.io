@@ -1,8 +1,3 @@
-html {
-  font-size: 62.5%;
-  color: white;
-  background: linear-gradient(146.5deg, #230A11 -1.96%, #5D0D5F 97.8%);
-}
-body {
-  margin: 0%;
+p {
+  color: #ee70f9; 
 }
