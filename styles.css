@@ -19,7 +19,7 @@ links {
   padding: 150px 500px;
 }
 
-h1 {
+.logo h1 {
   background-image: url("https://img.itch.zone/aW1nLzg2NzMyMzkucG5n/original/25zfpv.png");
   background-repeat: no-repeat;
   text-align: center;
@@ -31,8 +31,14 @@ h1 {
   background-size: auto;
 }
 
+h1 {
+  text-align: center;
+  text-shadow: 1px 1px 8px var(--text_bloom_color);
+}
+
 h2 {
   text-align: center;
+  text-shadow: 1px 1px 8px var(--text_bloom_color);
 }
 
 
@@ -49,4 +55,46 @@ a {
 
 b {
   text-align: center;
+}
+
+/* The images */
+
+
+
+
+.outer-grid {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 0 0px;
+}
+.inner-grid {
+  flex: 25px;
+  max-width: 300px;
+  padding: 0 4px;
+}
+.inner-grid img {
+  transition: transform 0.2s;
+  transition-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+
+  transform:scale(1);
+  margin-top: 5px;
+  width: 300px;
+}
+
+.inner-grid img:hover {
+  transform: scale(1.1);
+}
+
+
+@media screen and (max-width: 800px) {
+  .inner-grid {
+     flex: 50px;
+     max-width: 50px;
+  }
+}
+@media screen and (max-width: 600px) {
+  .inner-grid {
+     flex: 100px;
+     max-width: 100px;
+  }
 }
