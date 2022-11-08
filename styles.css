@@ -68,7 +68,7 @@ b {
 }
 .inner-grid {
   flex: 25px;
-  max-width: 300px;
+  max-width: 25%;
   padding: 0 4px;
 }
 .inner-grid img {
