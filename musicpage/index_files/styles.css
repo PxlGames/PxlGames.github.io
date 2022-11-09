@@ -1,6 +1,6 @@
 :root
 {
-    --ground_color: #09135e;
+    --ground_color: #071266;
     --ground_color_2: #0f143d;
     --text_bloom_color: rgba(255, 255, 255, 0.3)
 }
@@ -19,16 +19,16 @@ links {
   padding: 150px 500px;
 }
 
-.logo h1 {
-  background-image: url("https://img.itch.zone/aW1nLzg2NzMyMzkucG5n/original/25zfpv.png");
+/* .logo h1 {
   background-repeat: no-repeat;
   text-align: center;
 
-  /* width: 500px;  
-  height: 200px;   */
+  width: 500px;  
+  height: 200px;  
+  margin-left: -210px;
   padding: 125px 490px;
   background-size: auto;
-}
+} */
 
 h1 {
   text-align: center;
@@ -61,7 +61,7 @@ b {
 .link-buttons button {
   transition: transform 0.1s;
   transition-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  background-color: #3a4285;
+  background-color: #323fa1;
 
   box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
   border-radius: 15px;
@@ -72,16 +72,23 @@ b {
   /* transition-duration: 0.4s; */
   transform: scale(1.1);
   box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
-  background-color: #212653;
+  background-color: #276ba6;
   /* color: white; */
 }
 
-.left-side {
-  display: grid;
-}
 
-img {
-  transition: transform 0.1s;
+.outer-grid {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 0 0px;
+}
+.inner-grid {
+  flex: 25%;
+  max-width: 300px;
+  padding: 0 4px;
+}
+.inner-grid img {
+  transition: transform 0.2s;
   transition-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1.275);
 
   transform:scale(1);
@@ -89,6 +96,20 @@ img {
   width: 100%;
 }
 
-img:hover {
-  transform: scale(1.05);
+.inner-grid img:hover {
+  transform: scale(1.1);
+}
+
+
+@media screen and (max-width: 800px) {
+  .inner-grid {
+     flex: 50px;
+     max-width: 50px;
+  }
+}
+@media screen and (max-width: 600px) {
+  .inner-grid {
+     flex: 100px;
+     max-width: 100px;
+  }
 }
