@@ -1,64 +1,475 @@
-<!DOCTYPE html>
-<!-- saved from url=(0072)file:///D:/Downloaded%20Stuff/GITHUB%20REP/PxlGames.github.io/index.html -->
-<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!doctype html>
+<html class="no-js" lang="en">
 
-  
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="./index_files/styles.css"> 
-    <title>PxlDev Page</title>
-  </head>
+    <head>
+        <!-- meta data -->
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 
-  <body>
-    <content style="text-align: center;">
-        <div style="width: 950px; margin: 0 auto; padding-bottom: 6px; background-color: var(--ground_color); border: 2px dashed rgba(255, 255, 255, 0.1); border-radius: 5px; color: #fff; margin-top:10px; padding-top:5px;">
-            <div class="link-buttons">
-                <button type="button"> <a href="https://pxldev.itch.io/"><p style="text-align:center">My games</p></a> </button>
-                <button type="button"> <a href="musicpage/index.html"><p style="text-align:center">My music</p></a> </button>
-                <button type="button"> <a href="https://youtube.com/c/pxldev/"><p style="text-align:center">My YouTube channel</p></a> </button>
-                <button type="button"> <a href="https://teammelon.itch.io/"><p style="text-align:center">Team Melon Itch Page</p></a> </button>
-            </div>
-        </div>
-    </content>
+        <!--font-family-->
+		<link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900&amp;subset=devanagari,latin-ext" rel="stylesheet">
+        
+        <!-- title of site -->
+        <title>Pxl</title>
 
-    <div class="logo" style="width: 960px;margin: 0 auto;margin-top:-20px;">
-        <h1 style="margin-left: auto;"> </h1> 
-    </div>
+        <!-- For favicon png -->
+		<link rel="shortcut icon" type="image/icon" href="assets/logo/favicon.png"/>
+       
+        <!--font-awesome.min.css-->
+        <link rel="stylesheet" href="assets/css/font-awesome.min.css">
 
-    <description style="text-align: center;">
-        <div style="width: 950px; margin: 10px auto; background-color: var(--ground_color); border: 2px dashed rgba(255, 255, 255, 0.1); border-radius: 5px; color: #fff;">
-            <h2>About me:</h2>
-            <p>I am a game developer, an artist, a musician and a voice actor.</p>
-            <p>I have been working with a team called Team Melon, and we have published multiple different and unique games!</p>
-        </div>
-    </description>
+		<!--flat icon css-->
+		<link rel="stylesheet" href="assets/css/flaticon.css">
 
-    <div class="game-information" style="width: 950px; margin: 0px auto;">
-        <style>#div1 { height: 390px; width:540px; overflow: scroll; }</style>
-        <div class="left-side" style="float:left">
-            <div id="div1">
-                <div id="grid-container">
-                    <a href="./index_files/image1.png"> <img class="image" src="./index_files/image1.png" style="max-width: 250px; max-height: auto;" alt="an image" title="A screenshot from a game"> </a>
-                    <a href="./index_files/image3.PNG"> <img class="image" src="./index_files/image3.PNG" style="max-width: 250px; max-height: auto;" alt="an image" title="A screenshot from a game"> </a>
-                    <a href="./index_files/image4.png"> <img class="image" src="./index_files/image4.png" style="max-width: 250px; max-height: auto;" alt="an image" title="A screenshot from a game"> </a>
-                    <a href="./index_files/image10.png"> <img class="image" src="./index_files/image10.png" style="max-width: 250px; max-height: auto;" alt="an image" title="A screenshot from a game"> </a>
-                    <a href="./index_files/image11.png"> <img class="image" src="./index_files/image11.png" style="max-width: 250px; max-height: auto;" alt="an image" title="A screenshot from a game"> </a>
-                    <a href="./index_files/image5.png"> <img class="image" src="./index_files/image5.png" style="max-width: 250px; max-height: auto;" alt="an image" title="A screenshot from a game"> </a>
-                    <a href="./index_files/image6.png"> <img class="image" src="./index_files/image6.png" style="max-width: 250px; max-height: auto;" alt="an image" title="A screenshot from a game"> </a>
-                    <a href="./index_files/image7.png"> <img class="image" src="./index_files/image7.png" style="max-width: 250px; max-height: auto;" alt="an image" title="A screenshot from a game"> </a>
-                    <a href="./index_files/image8.png"> <img class="image" src="./index_files/image8.png" style="max-width: 250px; max-height: auto;" alt="an image" title="A screenshot from a game"> </a>
-                    <a href="./index_files/image9.png"> <img class="image" src="./index_files/image9.png" style="max-width: 250px; max-height: auto;" alt="an image" title="A screenshot from a game"> </a>
-                </div>
-            </div>
-        </div>
-        <div class="right-side" style="float:right">
-            <div image-description="" style="width: 390px; margin: 0 auto; background-color: var(--ground_color); border: 2px dashed rgba(255, 255, 255, 0.1); border-radius: 5px; color: #fff;" "="">
-                <h1>My games:</h1>
-                <p>These images are screenshots from some of my games, which I have made and worked on.</p>
-                <p>Most of the games have been made during a game jam. Game jams are challenges where you have to make a game in a specified amount of time and with a specified theme.</p>
-                <p>I have the most experience in making 2D games, but I also can work in 3D. When it comes to art I prefer making pixel art.</p>
+		<!--animate.css-->
+        <link rel="stylesheet" href="assets/css/animate.css">
 
-            </div>
-        </div>
-      </div>
-  
-</body></html>
+        <!--owl.carousel.css-->
+        <link rel="stylesheet" href="assets/css/owl.carousel.min.css">
+		<link rel="stylesheet" href="assets/css/owl.theme.default.min.css">
+		
+        <!--bootstrap.min.css-->
+        <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+		
+		<!-- bootsnav -->
+		<link rel="stylesheet" href="assets/css/bootsnav.css" >	
+        
+        <!--style.css-->
+        <link rel="stylesheet" href="assets/css/style.css">
+        
+        <!--responsive.css-->
+        <link rel="stylesheet" href="assets/css/responsive.css">
+        
+        <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+		
+        <!--[if lt IE 9]>
+			<script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+			<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+        <![endif]-->
+
+    </head>
+	
+	<body>
+		<!--[if lte IE 9]>
+            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience and security.</p>
+        <![endif]-->
+		
+		<!-- top-area Start -->
+		<header class="top-area">
+			<div class="header-area">
+				<!-- Start Navigation -->
+			    <nav class="navbar navbar-default bootsnav navbar-fixed dark no-background">
+
+			        <div class="container">
+
+			            <!-- Start Header Navigation -->
+			            <div class="navbar-header">
+			                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-menu">
+			                    <i class="fa fa-bars"></i>
+			                </button>
+			                <a class="navbar-brand" href="index.html">Pxl Dev</a>
+			            </div><!--/.navbar-header-->
+			            <!-- End Header Navigation -->
+
+			            <!-- Collect the nav links, forms, and other content for toggling -->
+			            <div class="collapse navbar-collapse menu-ui-design" id="navbar-menu">
+			                <ul class="nav navbar-nav navbar-right" data-in="fadeInDown" data-out="fadeOutUp">
+			                <li class=" smooth-menu active"></li>
+			                    <li class="smooth-menu"><a href="#skills">Skills</a></li>
+			                    <li class="smooth-menu"><a href="#portfolio">My work</a></li>
+								<li class="smooth-menu"><a href="https://open.spotify.com/artist/7LO0UMyp39smYDxo7drq60?si=lhvgWbYHQTu4sU3miDi4-Q">My spotify</a></li>
+			                    <li class="smooth-menu"><a href="https://youtube.com/@pxldev">YouTube</a></li>
+			                    <li class="smooth-menu"><a href="https://pxldev.itch.io/">My games</a></li>
+			                </ul><!--/.nav -->
+			            </div><!-- /.navbar-collapse -->
+			        </div><!--/.container-->
+			    </nav><!--/nav-->
+			    <!-- End Navigation -->
+			</div><!--/.header-area-->
+
+		    <div class="clearfix"></div>
+
+		</header><!-- /.top-area-->
+		<!-- top-area End -->
+	
+		<!--welcome-hero start -->
+		<section id="welcome-hero" class="welcome-hero">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-12 text-center">
+						<div class="header-text">
+							<h2>Hey <span>,</span> i am <br> Pxl Dev!</span>   </h2>
+							<p>A musician, a voice actor, an artist and a game developer.</p>
+						</div><!--/.header-text-->
+					</div><!--/.col-->
+				</div><!-- /.row-->
+			</div><!-- /.container-->
+
+		</section><!--/.welcome-hero-->
+		<!--welcome-hero end -->
+
+		<!--about start -->
+		<section id="about" class="about">
+			<div class="section-heading text-center">
+				<h2>about me</h2>
+			</div>
+			<div class="container">
+				<div class="about-content">
+					<div class="row">
+						<div class="col-sm-6">
+							<div class="single-about-txt">
+								<h3>
+									I'm a game developer, who dabbles in multiple different sides of game development, these sides include programming, music composition & 2D and 3D-art.
+								</h3>
+								<p>
+									I have extensive experience collaborating with diverse individuals and teams to create different projects. 
+
+									Among these, I am proud to be a continuing member of Team Melon, where I contribute as a versatile generalist.
+								</p>
+
+								<p>
+									My skill set includes proficiency in Unity for game development, Blender for 3D modeling and animation, and C# for programming. I am also adept at video editing with DaVinci Resolve and compose original music using FL Studio, allowing me to bring a well-rounded approach to creative and technical challenges.
+								</p>
+
+								<div class="row">
+									<div class="col-sm-4">
+										<div class="single-about-add-info">
+											<h3>email</h3>
+											<p>contact.pxldev@gmail.com</p>
+										</div>
+									</div>
+									<div class="col-sm-4">
+										<div class="single-about-add-info">
+											<h3> </‎h3>
+											<p>‎ </p>
+										</div>
+									</div>
+									<div class="col-sm-4">
+										<div class="single-about-add-info">
+											<h3>Discord</h3>
+											<p>pxldev</p>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-sm-offset-1 col-sm-5">
+							<div class="single-about-img">
+								<img src="assets/images/about/PROFILE.png" alt="profile_image">
+								<div class="about-list-icon">
+									<ul>
+										<li>
+											<a href="https://bsky.app/profile/pxldev.bsky.social">
+												<img src="assets/images/about/bluesky-brands-solid.png" alt="Bluesky Icon" style="width: 20px; height: 20px;">
+											</a>
+										</li><!-- / li -->
+										<li>
+											<a href="https://www.linkedin.com/in/mika-henttinen-23a374248/">
+												<i  class="fa fa-linkedin" aria-hidden="true"></i>
+											</a>
+										</li><!-- / li -->
+										<li>
+											<a href="https://www.instagram.com/pxlgamedev/">
+												<i  class="fa fa-instagram" aria-hidden="true"></i>
+											</a>
+										</li><!-- / li -->
+										
+										
+									</ul><!-- / ul -->
+								</div><!-- /.about-list-icon -->
+
+							</div>
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</section><!--/.about-->
+		<!--about end -->
+
+		<!--skills start -->
+		<section id="skills" class="skills">
+				<div class="skill-content">
+					<div class="section-heading text-center">
+						<h2>skills</h2>
+					</div>
+					<div class="container">
+						<div class="row">
+							<div class="col-md-6">
+								<div class="single-skill-content">
+									<div class="barWrapper">
+										<span class="progressText">Unity</span>
+										<div class="single-progress-txt">
+											<div class="progress ">
+												<div class="progress-bar" role="progressbar" aria-valuenow="90" aria-valuemin="10" aria-valuemax="100" style="width: 90%;">
+													  
+												</div>
+											</div>
+											<h3>90%</h3>	
+										</div>
+									</div><!-- /.barWrapper -->
+									<div class="barWrapper">
+										<span class="progressText">C#</span>
+										<div class="single-progress-txt">
+											<div class="progress ">
+											   <div class="progress-bar" role="progressbar" aria-valuenow="85" aria-valuemin="10" aria-valuemax="100" style="width: 85%;">
+												    
+											   </div>
+											</div>
+											<h3>85%</h3>	
+										</div>
+									</div><!-- /.barWrapper -->
+									<div class="barWrapper">
+										<span class="progressText">Blender</span>
+										<div class="single-progress-txt">
+											<div class="progress ">
+											   <div class="progress-bar" role="progressbar" aria-valuenow="97" aria-valuemin="10" aria-valuemax="100" style="width: 97%;">
+												   
+											   </div>
+											</div>
+											<h3>97%</h3>	
+										</div>
+									</div><!-- /.barWrapper -->
+									<div class="barWrapper">
+										<span class="progressText">FL Studio</span>
+										<div class="single-progress-txt">
+											<div class="progress ">
+											   <div class="progress-bar" role="progressbar" aria-valuenow="90" aria-valuemin="10" aria-valuemax="100" style="width: 90%;">
+												    
+											   </div>
+											</div>
+											<h3>90%</h3>	
+										</div>
+									</div><!-- /.barWrapper -->
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="single-skill-content">
+									<div class="barWrapper">
+										<span class="progressText">Davinci Resolve</span>
+										<div class="single-progress-txt">
+											<div class="progress ">
+												<div class="progress-bar" role="progressbar" aria-valuenow="87" aria-valuemin="10" aria-valuemax="100" style="width: 87%;">
+													
+												</div>
+											</div>
+											<h3>87%</h3>	
+										</div>
+									</div><!-- /.barWrapper -->
+									<div class="barWrapper">
+										<span class="progressText">Voice Acting</span>
+										<div class="single-progress-txt">
+											<div class="progress ">
+											   <div class="progress-bar" role="progressbar" aria-valuenow="95" aria-valuemin="10" aria-valuemax="100" style="width: 95%;">
+												    
+											   </div>
+											</div>
+											<h3>95%</h3>	
+										</div>
+									</div><!-- /.barWrapper -->
+									<div class="barWrapper">
+										<span class="progressText">Communication</span>
+										<div class="single-progress-txt">
+											<div class="progress ">
+											   <div class="progress-bar" role="progressbar" aria-valuenow="90" aria-valuemin="10" aria-valuemax="100" style="width: 90%;">
+												   
+											   </div>
+											</div>
+											<h3>90%</h3>	
+										</div>
+									</div><!-- /.barWrapper -->
+									<div class="barWrapper">
+										<span class="progressText">Creativity</span>
+										<div class="single-progress-txt">
+											<div class="progress ">
+											   <div class="progress-bar" role="progressbar" aria-valuenow="90" aria-valuemin="10" aria-valuemax="100" style="width: 90%;">
+												    
+											   </div>
+											</div>
+											<h3>90%</h3>	
+										</div>
+									</div><!-- /.barWrapper -->
+								</div>
+							</div>
+						</div><!-- /.row -->
+					</div>	<!-- /.container -->		
+				</div><!-- /.skill-content-->
+
+		</section><!--/.skills-->
+		<!--skills end -->
+
+		<section id="portfolio" class="portfolio">
+			<div class="portfolio-details">
+				<div class="section-heading text-center">
+					<h2>Examples of my work</h2>
+
+					<h2>Voice acting</h2>
+
+					<a>I have published some of my voice acting work on youtube.</a>
+
+					<br></br>
+					<a>I founded a voice acting group called "The Basement VA Group", where I produce and collaborate on voice-acted video projects.</a>
+					<br></br>
+
+					<div class="youtube-grid">
+						<div class="youtube-video">
+							<iframe 
+								width="400" 
+								height="225" 
+								src="https://www.youtube.com/embed/U0BdpvOl2Ew" 
+								title="YouTube video player" 
+								frameborder="0" 
+								allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+								allowfullscreen>
+							</iframe>
+						</div>
+
+						<div class="youtube-video">
+							<iframe 
+								width="400" 
+								height="225" 
+								src="https://www.youtube.com/embed/QlKe_cqFio4" 
+								title="YouTube video player" 
+								frameborder="0" 
+								allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+								allowfullscreen>
+							</iframe>
+						</div>
+
+						<div class="youtube-video">
+							<iframe 
+								width="400" 
+								height="225" 
+								src="https://www.youtube.com/embed/EiwbZOdLK20" 
+								title="YouTube video player" 
+								frameborder="0" 
+								allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+								allowfullscreen>
+							</iframe>
+						</div>
+					</div>
+
+					<br></br>
+					<div class="button-container">
+						<button class="youtube-button" onclick="window.open('https://youtube.com/c/pxldev', '_blank')">My YouTube.</button>
+						<button class="youtube-button" onclick="window.open('https://www.youtube.com/@TheBasementVAGroup', '_blank')">The Basement VA Group.</button>
+					</div>
+					<br></br>
+					<br></br>
+				</div>
+
+				<div class="section-heading text-center">
+					<h2>Music</h2>
+
+					<a>I have published my music on Spotify. Most of the songs there are non-game related.</a>
+					<br></br>
+					<a>You can find all my published music pieces on my YouTube channel. I do not usually publish my game OST's on my YouTube channel.</a>
+
+					<br></br>
+					<iframe style="border-radius:12px" src="https://open.spotify.com/embed/artist/7LO0UMyp39smYDxo7drq60?utm_source=generator&theme=0" width="50%" height="300" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+					<br></br>
+				</div>
+				<div class="section-heading text-center">
+					<h2>Game development</h2>
+
+					<button class="itch-button"onclick="window.open('https://pxldev.itch.io', '_blank')">See the games I've made.</button>
+					<br></br>
+					<a>Here are some screenshots of the projects I've worked on. Some of them have been released, some of them are yet to be released and/or are scrapped alltogether.</a>
+					<br></br>
+					<a>(Click the image to see it in another tab.)</a>
+					<br></br>
+				</div>
+				<div class="container">
+					<div class="portfolio-content">
+						<div class="isotope grid-container">
+							<div class="item">
+								<a href="assets/images/portfolio/ss0.png" target="_blank">
+									<img src="assets/images/portfolio/ss0.png" alt="portfolio image" />
+									<div class="isotope-overlay">
+										Pixel art
+									</div>
+								</a>
+							</div>
+							<div class="item">
+								<a href="assets/images/portfolio/ss1.png" target="_blank">
+									<img src="assets/images/portfolio/ss1.png" alt="portfolio image" />
+									<div class="isotope-overlay">
+										Messing with water shaders
+									</div>
+								</a>
+							</div>
+							<div class="item">
+								<a href="assets/images/portfolio/ss2.png" target="_blank">
+									<img src="assets/images/portfolio/ss2.png" alt="portfolio image" />
+									<div class="isotope-overlay">
+										Testing shaders, and post-processing
+									</div>
+								</a>
+							</div>
+							<!-- Add more items as needed -->
+						</div><!-- /.isotope -->
+					</div><!-- /.portfolio-content -->
+				</div><!-- /.container -->
+
+				<div class="container">
+					<div class="portfolio-content">
+						<div class="isotope grid-container">
+							<div class="item">
+								<a href="assets/images/portfolio/ss3.png" target="_blank">
+									<img src="assets/images/portfolio/ss3.png" alt="portfolio image" />
+									<div class="isotope-overlay">
+										Just an example view I made
+									</div>
+								</a>
+							</div>
+							<div class="item">
+								<a href="assets/images/portfolio/ss4.png" target="_blank">
+									<img src="assets/images/portfolio/ss4.png" alt="portfolio image" />
+									<div class="isotope-overlay">
+										Practising low poly 3D
+									</div>
+								</a>
+							</div>
+							<div class="item">
+								<a href="assets/images/portfolio/ss5.png" target="_blank">
+									<img src="assets/images/portfolio/ss5.png" alt="portfolio image" />
+									<div class="isotope-overlay">
+										<a>A game I made with other person.</a>
+										<br></br>
+										<a>(I collaborated with another artist)</a>
+									</div>
+								</a>
+							</div>
+							<!-- Add more items as needed -->
+						</div><!-- /.isotope -->
+					</div><!-- /.portfolio-content -->
+				</div><!-- /.container -->
+
+				<div class="container">
+					<div class="portfolio-content">
+						<div class="isotope grid-container">
+							<div class="item">
+								<a href="assets/images/portfolio/ss6.png" target="_blank">
+									<img src="assets/images/portfolio/ss6.png" alt="portfolio image" />
+									<div class="isotope-overlay">
+										I tried to make a GBC game
+									</div>
+								</a>
+							</div>
+							<!-- Add more items as needed -->
+						</div><!-- /.isotope -->
+					</div><!-- /.portfolio-content -->
+				</div><!-- /.container -->
+			</div><!-- /.portfolio-details -->
+		</section><!-- /.portfolio -->
+
+
+        <!--Custom JS-->
+        <script src="assets/js/custom.js"></script>
+        
+    </body>
+	
+</html>
