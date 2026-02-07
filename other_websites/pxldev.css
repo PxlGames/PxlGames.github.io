@@ -68,31 +68,23 @@ em {
 /* =========================
    Custom credits button
    ========================= */
-.custom-credits, .link_group {
+.custom-credits,
+.link_group {
     display: inline-block;
     padding: 12px 20px;
-    background: linear-gradient(45deg, #d0009f, #FF0015);
     border-radius: 8px;
     color: white;
     transition: background 0s, transform 0.2s;
+    background: linear-gradient(45deg, #d0009f, #FF0015);
+    z-index: 5;
+    &:hover { background: #fa815c; transform: scale(1.05); z-index: 10;}
+
+    a[href*="http"] { color: white; }
 }
 
-.link_group
-{
+.link_group {
     transform: scale(0.75);
-    margin-left: -20px;
-    margin-right: -20px;
-}
-
-/* Hover pop effect */
-.custom-credits:hover, .link_group:hover {
-    background: #fa5c5c;
-    transform: scale(1.05);
-}
-
-/* Links inside credits */
-.custom-credits a[href*="http"] {
-    color: white;
+    margin: 0 -20px;
 }
 
 /* =========================
@@ -173,15 +165,6 @@ h1,
    User profile blocks
    ========================= */
 
-.user_page .user_links {
-    display: flex;            /* lays out children (links) horizontally */
-    justify-content: center;  /* centers them horizontally */
-    gap: 0px;                /* optional spacing between links */
-    /* keep your original spacing if needed */
-    margin: -45px 0px 0px;
-    z-index: 10;
-}
-
 .user_links,
 .formatted,
 .user_profile {
@@ -192,6 +175,11 @@ h1,
 }
 
 .user_links {
+    display: flex;
+    justify-content: center;
+    gap: 0px;
+    margin: -45px 0 0;
+    z-index: 10;
     border: 4px solid #2156a5;
 }
 
@@ -796,4 +784,9 @@ html {
 @keyframes scroll {
     from { background-position: 200% -200%; }
     to   { background-position: -200% 200%; }
+}
+
+.theme_editor_widget
+{
+    z-index: 100;
 }
