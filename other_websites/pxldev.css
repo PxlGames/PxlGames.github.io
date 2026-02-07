@@ -51,6 +51,20 @@ em {
     }
 }
 
+.header
+{
+    transform: translateY(-20px);
+}
+
+.user_page .user_profile.formatted
+{
+    padding-top:20px;
+    
+    p{
+        margin-left: 10px;
+    }
+}
+
 /* =========================
    Custom credits button
    ========================= */
@@ -61,6 +75,13 @@ em {
     border-radius: 8px;
     color: white;
     transition: background 0s, transform 0.2s;
+}
+
+.link_group
+{
+    transform: scale(0.75);
+    margin-left: -20px;
+    margin-right: -20px;
 }
 
 /* Hover pop effect */
@@ -151,9 +172,14 @@ h1,
 /* =========================
    User profile blocks
    ========================= */
+
 .user_page .user_links {
-    padding-left: 80px;
-    margin-top: -40px;
+    display: flex;            /* lays out children (links) horizontally */
+    justify-content: center;  /* centers them horizontally */
+    gap: 0px;                /* optional spacing between links */
+    /* keep your original spacing if needed */
+    margin: -45px 0px 0px;
+    z-index: 10;
 }
 
 .user_links,
@@ -161,7 +187,7 @@ h1,
 .user_profile {
     background: var(--background-color);
     border: 2px dashed #2156a5;
-    padding: 10px 5px;
+    padding: 1px 2px;
     border-radius: 5px;
 }
 
