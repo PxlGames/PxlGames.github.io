@@ -1,3 +1,138 @@
+/* =========================
+   VARIABLES
+========================= */
+:root {
+    --background-color: #0e1a6d;
+    --background-color-2: #0f0d59;
+    --outline: #ffffff1a;
+
+    --cover-width: 315px;
+    --cover-height: 250px;
+    
+    --cover2-width: 346px;
+    --cover2-height: 275px;
+
+    --desc-width: 150px;
+    --desc-height: 200px;
+
+    --game-width: 315px;
+    --game-height: 250px;
+
+    --game-desc-width: 295px;
+    --game-desc-height: 224px;
+}
+/* =========================
+   PROFILE
+========================= */
+em {
+    filter: drop-shadow(1px 1px 3px black);
+    background: repeating-linear-gradient(
+            to right,
+            #fc6767,
+            #f5fc67,
+            #67fcaf,
+            #67c0fc,
+            #dc67fc,
+            #fc676c
+    );
+    background-clip: text;
+    background-size: 600% 100%;
+    color: transparent;
+    animation: rainbow_animation 7s linear infinite;
+}
+
+/* Rainbow scrolling animation */
+@keyframes rainbow_animation {
+    0% {
+        background-position: 0;
+    }
+    100% {
+        background-position: 600%;
+    }
+}
+
+/* =========================
+   Custom credits button
+   ========================= */
+.custom-credits,
+.link_group {
+    display: inline-block;
+    padding: 12px 20px;
+    border-radius: 8px;
+    color: white;
+    transition: background 0s, transform 0.2s;
+    background: linear-gradient(45deg, #d0009f, #FF0015);
+    z-index: 5;
+    &:hover { background: #fa815c; transform: scale(1.05); z-index: 10;}
+
+    a[href*="http"] { color: white; }
+}
+
+.link_group {
+    transform: scale(0.75);
+    margin: 0 -20px;
+}
+
+/* =========================
+   Promo layout grid
+   ========================= */
+.custom-promo {
+    margin: -25px 0 30px;
+    display: grid;
+    grid-template-columns: repeat(3, auto);
+    align-items: center;
+    justify-items: start;
+    padding-left: 15px;
+}
+
+
+/* =========================
+   Text accents
+   ========================= */
+strong {
+    color: #41fcda;
+}
+
+/* Centered content blocks */
+.user_links,
+h1,
+.game_cell,
+.custom-text-block {
+    text-align: center;
+}
+
+/* =========================
+   User profile blocks
+   ========================= */
+
+.user_links,
+.formatted,
+.user_profile {
+text-align: center;
+    padding: 1px 2px;
+    border-radius: 5px;
+}
+
+.user_links {
+    display: flex;
+    justify-content: center;
+    gap: 0px;
+    margin: -45px 0 0;
+    z-index: 10;
+    border: 4px solid #2156a5;
+}
+
+/* =========================
+   Banner fade-in
+   ========================= */
+.profile_banner {
+    animation: fadein 1s ease-in-out 1 alternate;
+}
+
+/* =========================
+   GAME GRID CORE (BEHAVIOR)
+========================= */
+
 .game_grid_widget {
     display: grid;
     gap: 0;
@@ -318,3 +453,90 @@
     }
 }
 
+/* =========================
+   COLLECTION LAYOUT (UNCHANGED)
+========================= */
+
+.inner_column
+{
+    max-width: 1325px;
+}
+
+h2 > a {
+    text-align: center;
+    padding: 20px;
+    border: 2px dashed #0e093f;
+    border-radius: 5px 5px 0 5px;
+    display: block;
+    transform: translateY(15px);
+    text-shadow: 1px 1px 8px #ffffff4c;
+}
+
+.footer {
+    border: 2px dashed #0e093f;
+    border-radius: 12px;
+    padding: 20px;
+}
+
+.user_page {
+    .collection_row {
+        transform: scale(0.75);
+        
+        .game_grid_widget {
+            grid-template-columns: repeat(4, var(--game-width));
+            grid-row-gap: 10px;
+            grid-column-gap: 10px;
+        }
+        
+        .carousel_wrapper {
+            padding: 30px 12px 30px 15px;
+        }
+
+        .collection_description
+        {
+            margin-top: 17px;
+            margin-bottom: -17px;
+        }
+        
+            h2 a {
+                width: 75%;
+                margin: 0 auto;
+                font-size: 35px;
+                border-radius: 30px;
+                border: 2px solid rgba(255, 255, 255, 0.5);
+                animation: bobbing 4s ease-in-out infinite;
+            }
+
+            .carousel_wrapper {
+                background: transparent;
+                border: 0;
+                display: flex;
+                justify-content: center;
+            }
+
+            .game_grid_widget {
+                grid-template-columns: repeat(3, var(--game-width));
+                grid-row-gap: var(--game-height);
+                grid-gap: 10px;
+            }
+        
+    }
+}
+
+/* =========================
+   ANIMATIONS
+========================= */
+
+@keyframes fadein {
+    from { opacity: 0; }
+}
+
+@keyframes bobbing {
+    0%,100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+}
+
+@keyframes bobbing-small {
+    0%,100% { transform: translateY(1); }
+    50% { transform: translateY(-1px); }
+}
