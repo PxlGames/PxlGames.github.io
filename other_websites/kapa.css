@@ -73,18 +73,11 @@ em {
     margin: 0 -20px;
 }
 
-/* =========================
-   Promo layout grid
-   ========================= */
-.custom-promo {
-    margin: -25px 0 30px;
-    display: grid;
-    grid-template-columns: repeat(3, auto);
-    align-items: center;
-    justify-items: start;
-    padding-left: 15px;
+.user_page .text_header>h1
+{
+   font-size: 6.4em;
 }
-
+   
 
 /* =========================
    Text accents
@@ -539,4 +532,19 @@ h2 > a {
 @keyframes bobbing-small {
     0%,100% { transform: translateY(1); }
     50% { transform: translateY(-1px); }
+}
+
+html {
+    position: relative;
+    height: 102%;
+    margin: 0;
+
+    &::before {
+        content: '';
+        position: fixed;
+        inset: 0;
+        background: url(https://img.itch.zone/aW1nLzI2MDQzMTQwLmpwZw==/original/M3ylGP.jpg) fixed repeat;
+        filter: blur(2px) brightness(0.6);
+        z-index: -100;
+    }
 }
