@@ -464,11 +464,13 @@ h2 > a {
 }
 
 .footer {
-    border: 2px dashed #0e093f;
-   background-color: #0e093f;
-    border-radius: 12px;
-    padding: 10px;
+   border: 2px solid #9d91b145;
+   background-color: #06041e4d;
+   border-radius: 12px;
+   padding: 10px;
    margin-top: 100px;
+   bottom: 0;
+   position: absolute !important;
 }
 
 .user_page {
