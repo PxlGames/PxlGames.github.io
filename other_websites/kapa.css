@@ -465,6 +465,7 @@ h2 > a {
 
 .footer {
     border: 2px dashed #0e093f;
+   background-color: #0e093f;
     border-radius: 12px;
     padding: 20px;
 }
@@ -547,9 +548,10 @@ h2 > a {
   height: 100%;
 
   background-image: url(https://img.itch.zone/aW1nLzI2MDQzMTQwLmpwZw==/original/M3ylGP.jpg);
-  background-repeat: no-repeat;
+  background-repeat: repeat;
   background-position: 100% 0;
   background-attachment: fixed;
+  background-size: cover;
 
   filter: blur(8px) brightness(0.6) contrast(1.1);
   z-index: 0;
