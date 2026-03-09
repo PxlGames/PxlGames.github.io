@@ -550,11 +550,10 @@ h2 > a {
 
   background-image: url(https://img.itch.zone/aW1nLzI2MDQzMTQwLmpwZw==/original/M3ylGP.jpg);
   background-repeat: no-repeat;
-  background-position: center;
-  background-attachment: scroll;
-  background-size: cover;
+  background-position: 100% 0;
+  background-attachment: fixed;
 
-  filter: blur(2px);
+  filter: blur(8px) brightness(0.6) contrast(1.1);
   z-index: 0;
 }
 
