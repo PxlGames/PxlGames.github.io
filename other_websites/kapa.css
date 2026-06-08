@@ -63,7 +63,7 @@ em {
     transition: background 0s, transform 0.2s;
     background: linear-gradient(45deg, #d0009f, #FF0015);
     z-index: 5;
-    &:hover { background: #fa815c; transform: scale(1.05); z-index: 10;}
+    &:hover { background: #fa815c; transform: scale(0.9); z-index: 10;}
 
     a[href*="http"] { color: white; }
 }
@@ -73,18 +73,11 @@ em {
     margin: 0 -20px;
 }
 
-/* =========================
-   Promo layout grid
-   ========================= */
-.custom-promo {
-    margin: -25px 0 30px;
-    display: grid;
-    grid-template-columns: repeat(3, auto);
-    align-items: center;
-    justify-items: start;
-    padding-left: 15px;
+.user_page .text_header>h1
+{
+   font-size: 6.4em;
 }
-
+   
 
 /* =========================
    Text accents
@@ -117,9 +110,7 @@ text-align: center;
     display: flex;
     justify-content: center;
     gap: 0px;
-    margin: -45px 0 0;
     z-index: 10;
-    border: 4px solid #2156a5;
 }
 
 /* =========================
@@ -473,9 +464,13 @@ h2 > a {
 }
 
 .footer {
-    border: 2px dashed #0e093f;
-    border-radius: 12px;
-    padding: 20px;
+   border: 2px solid #9d91b145;
+   background-color: #06041e4d;
+   border-radius: 12px;
+   padding: 10px;
+   margin-top: 100px;
+   bottom: 0;
+   position: absolute !important;
 }
 
 .user_page {
@@ -504,6 +499,7 @@ h2 > a {
                 font-size: 35px;
                 border-radius: 30px;
                 border: 2px solid rgba(255, 255, 255, 0.5);
+                background-color: rgba(15, 15, 75, 0.2);
                 animation: bobbing 4s ease-in-out infinite;
             }
 
@@ -539,4 +535,33 @@ h2 > a {
 @keyframes bobbing-small {
     0%,100% { transform: translateY(1); }
     50% { transform: translateY(-1px); }
+}
+
+.user_page_wrap {
+  position: relative;
+  overflow: hidden;
+  background: none;
+}
+
+.user_page_wrap::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+
+  background-image: url(https://img.itch.zone/aW1nLzI2MDQzMTQwLmpwZw==/original/M3ylGP.jpg);
+  background-repeat: repeat;
+  background-position: 100% 0;
+  background-attachment: fixed;
+  background-size: cover;
+
+  filter: blur(8px) brightness(0.6) contrast(1.1);
+  z-index: 0;
+}
+
+.user_page_wrap > * {
+  position: relative;
+  z-index: 1;
 }
