@@ -75,7 +75,7 @@
 }
 
 .custom-dance {
-    transform: translateX(-25px) translateY(-730px) scale(2);
+    transform: translateX(-130px) translateY(-600px) scale(1.5);
     img
     {
         display: inline-block;
