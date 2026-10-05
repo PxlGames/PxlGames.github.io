@@ -1,784 +1,1156 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Chunk Junk Plugin Documentation</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chunk Junk Plugin Guide</title>
+    <script>
+        (function () {
+            try {
+                var saved = localStorage.getItem('chunkjunk-theme');
+                if (saved === 'light') {
+                    document.documentElement.setAttribute('data-theme', 'light');
+                }
+            } catch (e) {
+            }
+        })();
+    </script>
     <style>
         :root {
-            --bg: #212728;
-            --panel: #1a1f1f;
-            --panel-2: #33363f;
-            --border: #304145;
-            --text: #efede6;
-            --muted: #9aa0b4;
-            --accent: #6a83e8;
-            --accent-2: #7ddc53;
-            --warn: #f87f34;
-            --code-bg: #10131c;
-            --radius: 8px;
-            --maxw: 1180px;
-            --divider: #2d3a3e;
-            --scrollbar-track: #1a1f1f;
-            --scrollbar-thumb: #3d4f55;
-            --scrollbar-thumb-hover: #5a727a;
+            --bg-page: #17181a;
+            --bg-content: #1d1e21;
+            --bg-panel: #17181a;
+            --bg-panel-alt: #222326;
+            --bg-header: #131416;
+            --bg-topbar: #131416;
+
+            --text: #e5e1d8;
+            --text-muted: #9b978e;
+            --text-faint: #706d66;
+
+            --link: #88b0d4;
+            --link-visited: #b098b4;
+
+            --border: #33343a;
+            --border-soft: #2a2b30;
+            --border-strong: #45474e;
+
+            --code-bg: #191a1c;
+            --code-border: #2a2b30;
+            --code-text: #a8c690;
+            --code-plain: #d4d1c8;
+
+            --tok-comment: #6e757c;
+            --tok-keyword: #d1807c;
+            --tok-type:    #a3c48a;
+            --tok-string:  #d2a86c;
+            --tok-number:  #c9a05c;
+            --tok-fn:      #83a8cc;
+
+            --accent-blue: #7a94c8;
+            --accent-green: #8fbf7a;
+            --accent-red: #e08a5a;
+            --accent-discord: #7c8cff;
+
+            --scrollbar-track: #131416;
+            --scrollbar-thumb: #33343a;
+            --scrollbar-thumb-hover: #4a4c54;
         }
+
+        [data-theme="light"] {
+            --bg-page: #f6f6f6;
+            --bg-content: #ffffff;
+            --bg-panel: #f8f9fa;
+            --bg-panel-alt: #ffffff;
+            --bg-header: #eaecf0;
+            --bg-topbar: #ffffff;
+
+            --text: #202122;
+            --text-muted: #54595d;
+            --text-faint: #72777d;
+
+            --link: #0645ad;
+            --link-visited: #0b0080;
+
+            --border: #a2a9b1;
+            --border-soft: #eaecf0;
+            --border-strong: #a2a9b1;
+
+            --code-bg: #f8f9fa;
+            --code-border: #eaecf0;
+            --code-text: #202122;
+            --code-plain: #202122;
+
+            --tok-comment: #6e7781;
+            --tok-keyword: #cf222e;
+            --tok-type:    #116329;
+            --tok-string:  #0a3069;
+            --tok-number:  #0550ae;
+            --tok-fn:      #8250df;
+
+            --accent-blue: #36c;
+            --accent-green: #14866d;
+            --accent-red: #d33;
+            --accent-discord: #5865f2;
+
+            --scrollbar-track: #f1f3f5;
+            --scrollbar-thumb: #c8ccd1;
+            --scrollbar-thumb-hover: #a2a9b1;
+        }
+
         * {
             box-sizing: border-box;
+
+            scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+            scrollbar-width: thin;
         }
-        html,
-        body {
+
+        ::-webkit-scrollbar {
+            width: 12px;
+            height: 12px;
+            background: var(--scrollbar-track);
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--scrollbar-track);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--scrollbar-thumb);
+            border: 3px solid var(--scrollbar-track);
+            border-radius: 6px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--scrollbar-thumb-hover);
+        }
+
+        ::-webkit-scrollbar-corner {
+            background: var(--scrollbar-track);
+        }
+
+        html {
+            scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+            scrollbar-width: thin;
+            scroll-padding-top: 70px;
+        }
+
+        html, body {
             margin: 0;
             padding: 0;
-            height: 100%;
-        }
-        body {
-            background: var(--bg);
+            background: var(--bg-page);
             color: var(--text);
-            font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            line-height: 1.6;
-            font-size: 16px;
+            font-family: sans-serif;
+            font-size: 15px;
+            line-height: 1.65;
         }
+
+        body {
+            transition: background-color 0.18s ease, color 0.18s ease;
+        }
+
         a {
-            color: var(--accent);
+            color: var(--link);
             text-decoration: none;
         }
+
         a:hover {
             text-decoration: underline;
         }
 
-        ::-webkit-scrollbar {
-            width: 10px;
-            height: 10px;
+        a:visited {
+            color: var(--link-visited);
         }
-        ::-webkit-scrollbar-track {
-            background: var(--scrollbar-track);
-            border-radius: 0;
+
+        .topbar {
+            background: var(--bg-topbar);
+            border-bottom: 1px solid var(--border);
+            padding: 10px 24px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            transition: background-color 0.18s ease, border-color 0.18s ease;
         }
-        ::-webkit-scrollbar-thumb {
-            background: var(--scrollbar-thumb);
-            border-radius: 6px;
-            border: 2px solid var(--scrollbar-track);
+
+        .topbar .logo {
+            font-weight: bold;
+            font-size: 18px;
+            color: var(--text);
         }
-        ::-webkit-scrollbar-thumb:hover {
-            background: var(--scrollbar-thumb-hover);
+
+        .topbar .logo small {
+            font-weight: normal;
+            color: var(--text-muted);
+            font-size: 13px;
+            margin-left: 6px;
         }
-        * {
-            scrollbar-width: thin;
-            scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+
+        .topbar .spacer {
+            flex: 1;
+        }
+
+        .topbar .toplink {
+            color: var(--link);
+            font-size: 13px;
+        }
+
+        .topbar .toplink-discord {
+            color: var(--accent-discord);
+            font-weight: bold;
+        }
+
+        .theme-toggle {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text);
+            border-radius: 4px;
+            padding: 4px 10px;
+            font-size: 12px;
+            font-family: inherit;
+            line-height: 1.2;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+        }
+
+        .theme-toggle:hover {
+            background: var(--bg-panel);
+            border-color: var(--border-strong);
+        }
+
+        .theme-toggle .icon {
+            font-size: 14px;
+            line-height: 1;
         }
 
         .layout {
             display: flex;
-            max-width: var(--maxw);
+            max-width: 1300px;
             margin: 0 auto;
             align-items: flex-start;
         }
 
-        nav.toc {
-            width: 270px;
+        .sidebar {
+            width: 200px;
             flex-shrink: 0;
+            padding: 20px 12px 40px 20px;
+            font-size: 13px;
             position: sticky;
-            top: 0;
-            height: 100vh;
+            top: 54px;
+            max-height: calc(100vh - 54px);
             overflow-y: auto;
-            padding: 28px 18px 40px 24px;
-            border-right: 1px solid var(--border);
-            scrollbar-width: thin;
-            scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
         }
-        nav.toc::-webkit-scrollbar {
-            width: 6px;
-        }
-        nav.toc::-webkit-scrollbar-track {
-            background: var(--scrollbar-track);
-        }
-        nav.toc::-webkit-scrollbar-thumb {
-            background: var(--scrollbar-thumb);
-            border-radius: 6px;
-            border: none;
-        }
-        nav.toc::-webkit-scrollbar-thumb:hover {
-            background: var(--scrollbar-thumb-hover);
-        }
-        
-        .toc-divider {
-            border: none;
-            border-top: 1px solid var(--border);
-            margin: 12px 0 14px 0;
-            opacity: 0.6;
-        }
-        
-        nav.toc h2 {
+
+        .sidebar h3 {
             font-size: 12px;
-            letter-spacing: .08em;
             text-transform: uppercase;
-            color: var(--muted);
-            margin: 22px 0 8px 0;
+            letter-spacing: 0.5px;
+            color: var(--text-muted);
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 4px;
+            margin: 18px 0 8px 0;
+            font-weight: normal;
         }
-        nav.toc h2:first-child {
+
+        .sidebar h3:first-child {
             margin-top: 0;
         }
-        nav.toc ul {
+
+        .sidebar ul {
             list-style: none;
-            margin: 0;
             padding: 0;
+            margin: 0;
         }
-        nav.toc li {
-            border-bottom: 1px solid rgba(48, 65, 69, 0.25);
-            padding-bottom: 5px;
-            margin-bottom: 5px;
+
+        .sidebar li {
+            margin-bottom: 3px;
         }
-        
-        nav.toc li:last-child {
-            border-bottom: none;
-        }
-        
-        nav.toc a {
+
+        .sidebar li a {
             display: block;
-            padding: 5px 8px;
-            border-radius: 6px;
-            color: var(--muted);
-            font-size: 14px;
-            transition: background 0.15s, color 0.15s;
-        }
-        nav.toc a:hover {
-            background: var(--panel-2);
-            color: var(--text);
-            text-decoration: none;
+            padding: 3px 0;
+            color: var(--link);
         }
 
-        nav.toc a.active {
-            background: var(--panel-2);
-            color: var(--text);
-            border-left: 3px solid var(--accent);
-            padding-left: 5px;
-        }
-        nav.toc .brand {
-            font-weight: 700;
-            font-size: 17px;
-            color: var(--text);
-            margin-bottom: 2px;
-        }
-        nav.toc .brand-sub {
-            font-size: 12px;
-            color: var(--muted);
-            margin-bottom: 18px;
+        .sidebar li a:hover {
+            text-decoration: underline;
         }
 
-        main {
+        .content {
             flex: 1;
             min-width: 0;
-            padding: 40px 48px 120px 48px;
+            background: var(--bg-content);
+            border-left: 1px solid var(--border);
+            padding: 24px 40px 80px 40px;
+            transition: background-color 0.18s ease, border-color 0.18s ease;
         }
 
-        header.hero {
+        .content h1.page-title {
+            font-family: Georgia, "Times New Roman", serif;
+            font-size: 28px;
+            font-weight: normal;
             border-bottom: 1px solid var(--border);
-            padding-bottom: 28px;
-            margin-bottom: 36px;
-        }
-        header.hero .kicker {
-            color: var(--accent);
-            font-size: 13px;
-            letter-spacing: .08em;
-            text-transform: uppercase;
-            font-weight: 600;
-        }
-        header.hero h1 {
-            font-size: 36px;
-            margin: 8px 0 10px 0;
-        }
-        header.hero p.lead {
-            color: var(--muted);
-            font-size: 16px;
-            max-width: 760px;
+            padding-bottom: 6px;
+            margin: 0 0 4px 0;
         }
 
-        section {
-            margin-bottom: 52px;
-            scroll-margin-top: 20px;
-            position: relative;
+        .content .subtitle {
+            color: var(--text-muted);
+            font-size: 13.5px;
+            margin-bottom: 22px;
+            font-style: italic;
         }
 
-        section::after {
-            content: "◆";
-            display: block;
-            text-align: center;
-            color: var(--divider);
+        .content h2 {
+            font-family: Georgia, "Times New Roman", serif;
+            font-size: 22px;
+            font-weight: normal;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 4px;
+            margin: 32px 0 12px 0;
+        }
+
+        .content h2 .editlink {
+            float: right;
+            font-family: sans-serif;
             font-size: 12px;
-            letter-spacing: 0.3em;
-            margin-top: 44px;
-            opacity: 0.5;
-        }
-        section:last-of-type::after {
-            display: none;
+            color: var(--link);
+            font-weight: normal;
+            margin-top: 6px;
         }
 
-        section h2 {
-            font-size: 24px;
-            border-bottom: 1px solid var(--border);
-            padding: 10px 0 10px 18px;
-            margin: 0 0 16px 0;
-            position: relative;
-            background: var(--panel);
-            border-radius: var(--radius) var(--radius) 0 0;
-            border-left: 4px solid var(--accent);
-        }
-        section h2::before {
-            content: "§";
-            color: var(--muted);
-            font-size: 16px;
-            font-weight: 400;
-            margin-right: 10px;
-            opacity: 0.6;
+        .content h3 {
+            font-size: 17px;
+            font-weight: bold;
+            margin: 22px 0 8px 0;
         }
 
-        section h3 {
-            font-size: 18px;
-            color: var(--accent);
-            margin-top: 28px;
-            margin-bottom: 10px;
-            padding-left: 4px;
-            border-left: 3px solid var(--accent-2);
-            padding-left: 14px;
-        }
-        section h4 {
+        .content h4 {
             font-size: 15px;
-            color: var(--text);
-            margin-top: 18px;
-            margin-bottom: 6px;
+            font-weight: bold;
+            margin: 16px 0 6px 0;
         }
 
-        p {
+        .content p {
             margin: 0 0 12px 0;
         }
-        ul,
-        ol {
+
+        .content ul, .content ol {
             margin: 0 0 14px 0;
-            padding-left: 22px;
+            padding-left: 28px;
         }
-        li {
-            margin-bottom: 6px;
+
+        .content li {
+            margin-bottom: 5px;
         }
 
         code {
             background: var(--code-bg);
-            border: 1px solid var(--border);
-            border-radius: 4px;
-            padding: 1px 6px;
-            font-family: "Cascadia Code", "Consolas", monospace;
+            border: 1px solid var(--code-border);
+            border-radius: 2px;
+            padding: 1px 5px;
+            font-family: "Consolas", "Menlo", monospace;
             font-size: 13.5px;
-            color: var(--accent-2);
+            color: var(--code-text);
         }
+
         pre {
             background: var(--code-bg);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            padding: 16px 18px;
+            border: 1px solid var(--code-border);
+            padding: 12px 16px;
             overflow-x: auto;
-            margin: 0 0 16px 0;
+            font-family: "Consolas", "Menlo", monospace;
+            font-size: 13.5px;
+            line-height: 1.5;
+            margin: 0 0 14px 0;
         }
+
         pre code {
             background: none;
             border: none;
             padding: 0;
-            color: #d7e0f0;
-            font-size: 13.5px;
+            color: var(--code-plain);
         }
 
-        pre::-webkit-scrollbar {
-            height: 8px;
-        }
-        pre::-webkit-scrollbar-track {
-            background: var(--scrollbar-track);
-            border-radius: 4px;
-        }
-        pre::-webkit-scrollbar-thumb {
-            background: var(--scrollbar-thumb);
-            border-radius: 4px;
-        }
+        pre code .tok-comment { color: var(--tok-comment); font-style: italic; }
+        pre code .tok-keyword { color: var(--tok-keyword); }
+        pre code .tok-type    { color: var(--tok-type); }
+        pre code .tok-string  { color: var(--tok-string); }
+        pre code .tok-number  { color: var(--tok-number); }
+        pre code .tok-fn      { color: var(--tok-fn); }
 
-        table {
-            width: 100%;
+        table.wikitable {
             border-collapse: collapse;
-            margin: 0 0 18px 0;
-            font-size: 14.5px;
+            background: var(--bg-panel);
+            border: 1px solid var(--border);
+            margin: 0 0 16px 0;
+            font-size: 14px;
         }
-        th,
-        td {
+
+        table.wikitable th, table.wikitable td {
+            border: 1px solid var(--border);
+            padding: 6px 10px;
             text-align: left;
-            padding: 9px 12px;
-            border-bottom: 1px solid var(--border);
             vertical-align: top;
         }
-        th {
-            color: var(--muted);
-            font-weight: 600;
-            text-transform: uppercase;
-            font-size: 11.5px;
-            letter-spacing: .05em;
-        }
-        tr:last-child td {
-            border-bottom: none;
+
+        table.wikitable th {
+            background: var(--bg-header);
+            font-weight: bold;
         }
 
-        .card {
-            background: var(--panel);
+        table.wikitable tr:nth-child(even) td {
+            background: var(--bg-panel-alt);
+        }
+
+        .infobox {
+            background: var(--bg-panel);
             border: 1px solid var(--border);
-            border-radius: var(--radius);
-            padding: 18px 20px;
-            margin-bottom: 16px;
-        }
-        .card h4 {
-            margin-top: 0;
+            border-left: 5px solid var(--accent-blue);
+            padding: 10px 14px;
+            margin: 0 0 16px 0;
+            font-size: 14px;
         }
 
-        .grid-2 {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 16px;
-        }
-        @media (max-width: 820px) {
-            .grid-2 {
-                grid-template-columns: 1fr;
-            }
-            nav.toc {
-                display: none;
-            }
-            main {
-                padding: 24px;
-            }
-        }
-
-        .note,
-        .caution,
-        .rule {
-            border-left: 4px solid var(--accent);
-            background: var(--panel);
-            border-radius: 0 6px 6px 0;
-            padding: 12px 16px;
-            margin: 0 0 18px 0;
-        }
-        .note strong,
-        .caution strong,
-        .rule strong {
+        .infobox .label {
             display: block;
+            font-weight: bold;
             font-size: 12px;
-            letter-spacing: .06em;
             text-transform: uppercase;
-            margin-bottom: 4px;
-        }
-        .note {
-            border-left-color: var(--accent);
-        }
-        .note strong {
-            color: var(--accent);
-        }
-        .caution {
-            border-left-color: var(--warn);
-        }
-        .caution strong {
-            color: var(--warn);
-        }
-        .rule {
-            border-left-color: var(--accent-2);
-        }
-        .rule strong {
-            color: var(--accent-2);
+            letter-spacing: 0.5px;
+            color: var(--accent-blue);
+            margin-bottom: 3px;
         }
 
-        .pill {
-            display: inline-block;
-            background: var(--panel-2);
+        .infobox.warn {
+            border-left-color: var(--accent-red);
+        }
+
+        .infobox.warn .label {
+            color: var(--accent-red);
+        }
+
+        .infobox.tip {
+            border-left-color: var(--accent-green);
+        }
+
+        .infobox.tip .label {
+            color: var(--accent-green);
+        }
+
+        .infobox.discord {
+            border-left-color: var(--accent-discord);
+        }
+
+        .infobox.discord .label {
+            color: var(--accent-discord);
+        }
+
+        .toc {
+            background: var(--bg-panel);
             border: 1px solid var(--border);
-            color: var(--muted);
-            font-size: 11.5px;
-            padding: 2px 9px;
-            border-radius: 999px;
-            margin-right: 6px;
+            padding: 10px 16px;
+            display: inline-block;
+            margin: 0 0 22px 0;
+            font-size: 14px;
+            min-width: 260px;
         }
 
-        .step-list {
-            counter-reset: step;
-            list-style: none;
-            padding-left: 0;
+        .toc .toctitle {
+            text-align: center;
+            font-weight: bold;
+            margin-bottom: 6px;
         }
-        .step-list li {
-            counter-increment: step;
-            position: relative;
-            padding-left: 36px;
-            margin-bottom: 14px;
+
+        .toc ol {
+            margin: 0;
+            padding-left: 22px;
         }
-        .step-list li::before {
-            content: counter(step);
-            position: absolute;
-            left: 0;
-            top: 0;
-            width: 24px;
-            height: 24px;
-            border-radius: 50%;
-            background: var(--accent);
-            color: #0f1115;
-            font-weight: 700;
-            font-size: 13px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+
+        .toc ol ol {
+            padding-left: 22px;
+        }
+
+        .toc li {
+            margin-bottom: 2px;
         }
 
         .diagram {
-            background: var(--panel);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            padding: 20px;
-            margin-bottom: 18px;
-            font-family: "Cascadia Code", "Consolas", monospace;
+            background: var(--bg-panel);
+            border: 1px solid var(--code-border);
+            padding: 14px 18px;
+            font-family: "Consolas", "Menlo", monospace;
             font-size: 13px;
-            color: var(--muted);
-            overflow-x: auto;
             white-space: pre;
-            line-height: 1.5;
-        }
-        .diagram::-webkit-scrollbar {
-            height: 8px;
-        }
-        .diagram::-webkit-scrollbar-track {
-            background: var(--scrollbar-track);
-            border-radius: 4px;
-        }
-        .diagram::-webkit-scrollbar-thumb {
-            background: var(--scrollbar-thumb);
-            border-radius: 4px;
+            overflow-x: auto;
+            margin: 0 0 16px 0;
+            line-height: 1.55;
         }
 
-        footer {
-            border-top: 1px solid var(--border);
-            margin-top: 60px;
-            padding-top: 20px;
-            color: var(--muted);
+        .hatnote {
+            font-style: italic;
+            color: var(--text-muted);
+            padding-left: 24px;
+            margin-bottom: 12px;
+            font-size: 14px;
+        }
+
+        .catbar {
+            border: 1px solid var(--border);
+            background: var(--bg-panel);
+            padding: 6px 12px;
             font-size: 13px;
+            margin-top: 30px;
         }
 
-        .section-foot {
-            margin-top: 8px;
-            font-size: 12px;
-            text-align: right;
+        .catbar a {
+            margin-right: 6px;
         }
-        .section-foot a {
-            color: var(--muted);
-            opacity: 0.5;
-            transition: opacity 0.2s;
-        }
-        .section-foot a:hover {
-            opacity: 1;
-            text-decoration: none;
+
+        @media (max-width: 860px) {
+            .layout {
+                display: block;
+            }
+            .sidebar {
+                display: none;
+            }
+            .content {
+                border-left: none;
+                padding: 20px;
+            }
+            .topbar {
+                padding: 8px 14px;
+            }
+            .topbar .toplink {
+                display: none;
+            }
+            .topbar .toplink-discord {
+                display: inline;
+                font-size: 12px;
+            }
         }
     </style>
 </head>
 <body>
 
+<div class="topbar">
+    <div class="logo">Chunk Junk <small>Plugin Guide</small></div>
+    <div class="spacer"></div>
+    <a class="toplink toplink-discord" href="https://discord.gg/JQ26wdaWUD" target="_blank" rel="noopener">Discord</a>
+    <a class="toplink" href="#top">Page</a>
+    <a class="toplink" href="#toc">Contents</a>
+    <a class="toplink" href="#glossary">Glossary</a>
+    <button id="themeToggle" class="theme-toggle" aria-label="Toggle dark or light theme">
+        <span class="icon" id="themeIcon">&#9789;</span>
+        <span id="themeLabel">Dark</span>
+    </button>
+</div>
+
 <div class="layout">
 
-    <nav class="toc" id="toc-nav">
-        <div class="brand">Chunk Junk</div>
-        <div class="brand-sub">Plugin &amp; Creator Documentation</div>
-
-        <h2>Getting Started</h2>
+    <aside class="sidebar">
+        <h3>Getting started</h3>
         <ul>
-            <li><a href="#intro">Introduction</a></li>
+            <li><a href="#intro">1. Introduction</a></li>
+            <li><a href="#startup">2. How the app starts</a></li>
+            <li><a href="#frame">3. One frame, step by step</a></li>
+            <li><a href="#concepts">4. Core concepts</a></li>
         </ul>
-        <hr class="toc-divider" />
 
-        <h2>Application Basics</h2>
+        <h3>Project basics</h3>
         <ul>
-            <li><a href="#app-flow">How the Application Starts</a></li>
-            <li><a href="#core-concepts">Core Concepts</a></li>
-            <li><a href="#scenes-blocks">Scenes and Blocks</a></li>
-            <li><a href="#edit-modes">Edit Modes</a></li>
-            <li><a href="#render-pipeline">The Render Pipeline</a></li>
+            <li><a href="#scenes">5. Scenes and blocks</a></li>
+            <li><a href="#modes">6. Edit modes</a></li>
+            <li><a href="#pipeline">7. Render pipeline</a></li>
         </ul>
-        <hr class="toc-divider" />
 
-        <h2>Plugins</h2>
+        <h3>Plugins</h3>
         <ul>
-            <li><a href="#plugin-overview">Plugin Overview</a></li>
-            <li><a href="#plugin-folder">The Plugins Folder</a></li>
-            <li><a href="#plugin-isolation">Plugin Isolation</a></li>
-            <li><a href="#writing-a-plugin">Writing a Plugin</a></li>
-            <li><a href="#plugin-lifecycle">Plugin Lifecycle</a></li>
+            <li><a href="#plugin-basics">8. Plugin basics</a></li>
+            <li><a href="#folder">9. The Plugins folder</a></li>
+            <li><a href="#isolation">10. Isolation and unloading</a></li>
+            <li><a href="#hello">11. Your first plugin</a></li>
+            <li><a href="#lifecycle">12. Lifecycle</a></li>
         </ul>
-        <hr class="toc-divider" />
 
-        <h2>The Plugin Context</h2>
+        <h3>Services</h3>
         <ul>
-            <li><a href="#context-overview">Context Overview</a></li>
-            <li><a href="#svc-block">Block Service</a></li>
-            <li><a href="#svc-selection">Selection Service</a></li>
-            <li><a href="#svc-undo">Undo Service</a></li>
-            <li><a href="#svc-events">Event Service</a></li>
-            <li><a href="#svc-render">Render Service</a></li>
-            <li><a href="#svc-lighting">Lighting Service</a></li>
-            <li><a href="#svc-overlay">Overlay Service</a></li>
-            <li><a href="#svc-imgui">Interface Service</a></li>
-            <li><a href="#svc-input">Input Service</a></li>
-            <li><a href="#svc-log">Log Service</a></li>
-            <li><a href="#svc-importexport">Import/Export Service</a></li>
+            <li><a href="#context">13. The context object</a></li>
+            <li><a href="#svc-block">14. Blocks</a></li>
+            <li><a href="#svc-layer">15. Layers</a></li>
+            <li><a href="#svc-material">16. Materials</a></li>
+            <li><a href="#svc-editor">17. Editor state</a></li>
+            <li><a href="#svc-selection">18. Selection</a></li>
+            <li><a href="#svc-undo">19. Undo</a></li>
+            <li><a href="#svc-events">20. Events</a></li>
+            <li><a href="#svc-render">21. Rendering</a></li>
+            <li><a href="#svc-lighting">22. Lighting</a></li>
+            <li><a href="#svc-overlay">23. Overlays</a></li>
+            <li><a href="#svc-ui">24. Interface</a></li>
+            <li><a href="#svc-input">25. Input</a></li>
+            <li><a href="#svc-log">26. Logging</a></li>
+            <li><a href="#svc-importexport">27. Import and export</a></li>
+            <li><a href="#svc-assets">28. Assets and dialogs</a></li>
         </ul>
-        <hr class="toc-divider" />
 
-        <h2>Reference</h2>
+        <h3>Reference</h3>
         <ul>
-            <li><a href="#best-practices">Best Practices</a></li>
-            <li><a href="#troubleshooting">Troubleshooting</a></li>
-            <li><a href="#glossary">Glossary</a></li>
+            <li><a href="#practices">29. Best practices</a></li>
+            <li><a href="#limits">30. What you can't do</a></li>
+            <li><a href="#trouble">31. Troubleshooting</a></li>
+            <li><a href="#glossary">32. Glossary</a></li>
+            <li><a href="#types">33. Types</a></li>
+            <li><a href="#interfaces">34. Interfaces</a></li>
         </ul>
-    </nav>
+    </aside>
 
-    <main>
+    <main class="content" id="top">
 
-        <header class="hero">
-            <div class="kicker">Chunk Junk Documentation</div>
-            <h1>Plugin &amp; Creator Guide</h1>
-            <p class="lead">
-                This guide explains how Chunk Junk works, and how to build plugins for it.
-            </p>
-        </header>
+        <h1 class="page-title">Chunk Junk Plugin Guide</h1>
+        <div class="subtitle">How the editor works, and how to write plugins for it.</div>
 
-        <section id="intro">
-            <h2>1. Introduction</h2>
-            <p>
-                Chunk Junk is a block-based 3D editor. Users place blocks, edit block
-                shapes, paint textures, add decals, and add lights. Chunk Junk can
-                render scenes with real-time lighting and shadows. Chunk Junk can also
-                export scenes to common 3D file formats.
-            </p>
-            <p>
-                Chunk Junk supports plugins. A plugin is a separate program file. A
-                plugin adds new tools, new menu items, new windows, or new import and
-                export formats. A plugin does not need to change the main application.
-            </p>
-            <div class="note">
-                <strong>Scope of this document</strong>
-                This document explains the plugin system and the general application
-                flow.
-            </div>
-            <div class="section-foot"><a href="#top">↑ back to top</a></div>
-        </section>
+        <div class="infobox discord">
+            <span class="label">Community &amp; Support</span>
+            Questions, bug reports, help requests, and feature suggestions are all
+            welcome on the Chunk Junk Discord server.
+            Join here: <a href="https://discord.gg/JQ26wdaWUD"><strong>discord.gg/JQ26wdaWUD</strong></a>
+        </div>
 
-        <section id="app-flow">
-            <h2>3. How the Application Starts</h2>
-            <p>
-                This section describes the normal startup order. A plugin
-                does not have any control over this order. A plugin only needs to know
-                when the plugin loading step happens.
-            </p>
-            <ol class="step-list">
-                <li>The application window opens. The application shows a splash image.</li>
-                <li>The application loads textures, materials, and shapes.</li>
-                <li>The application builds its core systems. Core systems include the world system, the mesh system, the camera system, and the render pipeline.</li>
-                <li>The application loads plugins from the <code>Plugins</code> folder.</li>
-                <li>The application loads the last project, or opens the Welcome screen.</li>
-                <li>The application runs its main loop. The main loop updates input, updates systems, and draws each frame.</li>
+        <p>
+            Chunk Junk is a block based 3D editor developed by PxlDev. You place blocks, shape them, paint
+            them, add lights, and export the result. Plugins let you bolt new features
+            onto all of that without touching the main program.
+        </p>
+        <p>
+            This page is meant to be read top to bottom the first time, then used as a
+            reference afterward. Everything below describes the plugin API that ships
+            with Chunk Junk. If you just want to write a plugin right now, skip to
+            <a href="#hello">Your first plugin</a>. If you want to know what the API
+            deliberately does <em>not</em> let you do, jump to
+            <a href="#limits">What you can't do</a>.
+        </p>
+
+        <div class="toc" id="toc">
+            <div class="toctitle">Contents</div>
+            <ol>
+                <li><a href="#intro">Introduction</a></li>
+                <li><a href="#startup">How the app starts</a></li>
+                <li><a href="#frame">One frame, step by step</a></li>
+                <li><a href="#concepts">Core concepts</a></li>
+                <li><a href="#scenes">Scenes and blocks</a></li>
+                <li><a href="#modes">Edit modes</a></li>
+                <li><a href="#pipeline">Render pipeline</a></li>
+                <li><a href="#plugin-basics">Plugin basics</a></li>
+                <li><a href="#folder">The Plugins folder</a></li>
+                <li><a href="#isolation">Isolation and unloading</a></li>
+                <li><a href="#hello">Your first plugin</a></li>
+                <li><a href="#lifecycle">Lifecycle</a></li>
+                <li><a href="#context">The context object</a></li>
+                <li><a href="#svc-block">Block service</a></li>
+                <li><a href="#svc-layer">Layer service</a></li>
+                <li><a href="#svc-material">Material service</a></li>
+                <li><a href="#svc-editor">Editor service</a></li>
+                <li><a href="#svc-selection">Selection service</a></li>
+                <li><a href="#svc-undo">Undo service</a></li>
+                <li><a href="#svc-events">Event service</a></li>
+                <li><a href="#svc-render">Render service</a></li>
+                <li><a href="#svc-lighting">Lighting service</a></li>
+                <li><a href="#svc-overlay">Overlay service</a></li>
+                <li><a href="#svc-ui">Interface service</a></li>
+                <li><a href="#svc-input">Input service</a></li>
+                <li><a href="#svc-log">Log service</a></li>
+                <li><a href="#svc-importexport">Import and export</a></li>
+                <li><a href="#svc-assets">Assets and dialogs</a></li>
+                <li><a href="#practices">Best practices</a></li>
+                <li><a href="#limits">What you can't do</a></li>
+                <li><a href="#trouble">Troubleshooting</a></li>
+                <li><a href="#glossary">Glossary</a></li>
+                <li><a href="#types">Full type reference</a></li>
+                <li><a href="#interfaces">Full interface reference</a></li>
             </ol>
-            <div class="diagram">Startup
-                │
-                ├─ Load textures and materials
-                ├─ Build core systems (World, Mesh, Camera, Render Pipeline)
-                ├─ Load plugins  <- plugin Initialize() runs here
-                ├─ Load project or show Welcome screen
-                │
-                └─ Main Loop (repeats every frame)
-                    ├─ Read input
-                    ├─ Update active edit system
-                    ├─ Update plugins
-                    └─ Render frame</div>
-            <div class="section-foot"><a href="#top">↑ back to top</a></div>
-        </section>
+        </div>
 
-        <section id="core-concepts">
-            <h2>4. Core Concepts</h2>
-            <p>
-                Chunk Junk organizes its code into <strong>systems</strong>. A system
-                performs one task. The <strong>Engine</strong> holds a list of
-                systems and updates each system every frame.
-            </p>
-            <table>
-                <tr><th>System</th><th>Purpose</th></tr>
-                <tr><td><code>WorldSystem</code></td><td>Holds the list of scenes (layers) and the active scene.</td></tr>
-                <tr><td><code>MeshSystem</code></td><td>Builds and rebuilds the 3D geometry for each scene.</td></tr>
-                <tr><td><code>CameraSystem</code></td><td>Controls the view camera. The camera can orbit or fly.</td></tr>
-                <tr><td><code>ToolSystem</code></td><td>Switches between edit modes and sends input to the active edit mode.</td></tr>
-                <tr><td><code>RenderPipeline</code></td><td>Runs render passes in order, once per frame.</td></tr>
-            </table>
-            <p>
-                Plugins do not add new core systems directly. Plugins use
-                <strong>services</strong> instead. A service is a simplified
-                way to reach a core system. Chapter 6 describes every service.
-            </p>
-            <div class="section-foot"><a href="#top">↑ back to top</a></div>
-        </section>
+        <h2 id="intro">1. Introduction <a class="editlink" href="#intro">[link]</a></h2>
 
-        <section id="scenes-blocks">
-            <h2>5. Scenes and Blocks</h2>
-            <p>
-                A <strong>Scene</strong> is one layer in the project. ("Scene" is a leftover name for a different idea of handling layers.) A project can
-                hold many scenes. Each scene holds a grid of <strong>blocks</strong>.
-            </p>
-            <ul>
-                <li>A normal block is a plain cube. A normal block has a texture on each face.</li>
-                <li>An editable block is a block with moved vertices. An editable block can have a custom shape.</li>
-                <li>A block position is an integer grid coordinate, for example <code>(2, 0, -1)</code>.</li>
-            </ul>
-            <p>
-                The application groups blocks into <strong>chunks</strong> for
-                rendering. A chunk is a fixed-size cube region of the grid. The mesh
-                system rebuilds only the chunks that changed. This keeps editing fast
-                in large scenes.
-            </p>
-            <div class="section-foot"><a href="#top">↑ back to top</a></div>
-        </section>
+        <p>
+            A Chunk Junk plugin is a normal .NET class library. You build it into a
+            .dll file and drop that file into the editor's Plugins folder. On the next
+            start, the editor finds it, loads it, and gives it a chance to register
+            windows, menu items, file importers, and so on.
+        </p>
 
-        <section id="edit-modes">
-            <h2>6. Edit Modes</h2>
-            <p>
-                Chunk Junk has several edit modes. Each edit mode controls one kind
-                of editing. Only one edit mode is active at a time.
-            </p>
-            <table>
-                <tr><th>Mode</th><th>What the User Can Do</th></tr>
-                <tr><td>Block</td><td>Place and remove blocks and shapes.</td></tr>
-                <tr><td>Vertex</td><td>Move individual block corners.</td></tr>
-                <tr><td>Edge</td><td>Move block edges.</td></tr>
-                <tr><td>Face</td><td>Move block faces and flip face diagonals.</td></tr>
-                <tr><td>Paint</td><td>Paint textures onto block faces.</td></tr>
-                <tr><td>Decal</td><td>Paint free-form decal images onto faces.</td></tr>
-                <tr><td>Select</td><td>Select, move, copy, rotate, and mirror groups of blocks.</td></tr>
-                <tr><td>Light</td><td>Edit the position and direction of a light.</td></tr>
-            </table>
-            <div class="note">
-                <strong>Note for plugin developers</strong>
-                A plugin cannot create a brand new built-in edit mode. A plugin can
-                add new tools through the render, overlay, and input services
-                instead.
-            </div>
-            <div class="section-foot"><a href="#top">↑ back to top</a></div>
-        </section>
+        <p>
+            The plugin never gets raw access to the editor internals. Instead it talks
+            to a single object called the <strong>plugin context</strong>. That context
+            is the only thing your plugin ever needs to know about. It exposes a
+            handful of small services (Blocks, Layers, Materials, Input, and so on)
+            and that is the whole API surface.
+        </p>
 
-        <section id="render-pipeline">
-            <h2>7. The Render Pipeline</h2>
-            <p>
-                The render pipeline draws each frame in a fixed order. The pipeline
-                holds a list of <strong>render passes</strong>. A render pass draws
-                one part of the scene.
-            </p>
-            <div class="diagram">Render Pipeline (one frame)
-                │
-                ├─ Opaque Pass         -> draws solid block geometry and lighting
-                ├─ Overlay Pass        -> draws grids, gizmos, selection outlines, previews
-                └─ (Plugin passes may be inserted before or after these)</div>
-            <p>
-                A plugin can add its own render pass. A plugin can also add its own
-                <strong>overlay renderer</strong>. An overlay renderer draws helper
-                graphics, such as lines, shapes, or icons, on top of the 3D scene.
-            </p>
-            <div class="section-foot"><a href="#top">↑ back to top</a></div>
-        </section>
+        <div class="infobox tip">
+            <span class="label">If you only remember one thing</span>
+            Register everything you create through the context. Do not hook into the
+            editor directly. That way when your plugin is disabled, the editor can
+            clean up after it for you.
+        </div>
 
-        <section id="plugin-overview">
-            <h2>8. Plugin Overview</h2>
-            <p>
-                A plugin is a .NET class library (.dll file). A plugin contains one
-                or more classes. Each class implements the <code>IPlugin</code>
-                interface.
-            </p>
-<pre><code>public interface IPlugin
+        <p>
+            This document assumes you already know C#. You do not need to know anything
+            about OpenGL or ImGui to write most plugins, but you will need a bit of
+            both if you plan on drawing your own geometry.
+        </p>
+
+        <h2 id="startup">2. How the app starts <a class="editlink" href="#startup">[link]</a></h2>
+
+        <p>
+            The order the editor does things in matters, because it decides what is
+            available when your plugin's <code>Initialize</code> runs.
+        </p>
+
+        <ol>
+            <li>The window opens and shows a splash image.</li>
+            <li>Textures, materials, and shapes are loaded.</li>
+            <li>Core systems are built. That includes the world, the mesh system, the camera, and the render pipeline.</li>
+            <li>Plugins are loaded. This is where your <code>Initialize</code> runs.</li>
+            <li>The editor opens the last project, or shows the Welcome screen.</li>
+            <li>The main loop starts. It reads input, updates systems, and draws a frame, over and over.</li>
+        </ol>
+
+        <div class="diagram">Startup
+            |
+            +-- Load textures and materials
+            +-- Build core systems
+            +-- Load plugins          &lt;-- your Initialize() runs here
+            +-- Open project or Welcome screen
+            |
+            +-- Main loop (repeats every frame)
+            +-- Read input
+            +-- Update edit system
+            +-- Update plugins
+            +-- Render</div>
+
+        <p>
+            The important line is step 4. When your plugin runs, everything has been
+            set up and nothing has been loaded yet. You will not see a project until
+            step 5. If you need to react to a project being loaded, subscribe to the
+            ActiveSceneChanged event instead of trying to look at the scene during
+            <code>Initialize</code>.
+        </p>
+
+        <h3>Before the window is visible</h3>
+
+        <p>
+            Step 1 is worth a closer look, because it explains why textures have to
+            load on the main thread. OpenTK's window is created with
+            <code>StartVisible = false</code>, then the splash draws to it, and only
+            after the icon has been loaded does the window actually become visible.
+            But a real OpenGL context already exists from the moment the window is
+            created, hidden or not. That is what lets step 2 (<code>TextureManager.
+            LoadDefault</code>, <code>MaterialManager.Initialize</code>, shape
+            loading) issue GL calls at all before the user sees anything.
+        </p>
+
+        <p>
+            The practical consequence is that <strong>any code path that touches a texture
+            has to be running on the main thread</strong>, because the GL context is
+            bound to it. That includes <code>Materials.CreateMaterial</code> and
+            anything else that ends up calling into OpenGL. Decoding a PNG or
+            generating pixel data can happen on a background thread; uploading it
+            cannot.
+        </p>
+
+        <h2 id="frame">3. One frame, step by step <a class="editlink" href="#frame">[link]</a></h2>
+
+        <p>
+            Understanding the per-frame order helps avoid a category of bugs where a
+            plugin reads something that is a frame stale, or writes to something that
+            is about to be overwritten. Each frame roughly does this, in order:
+        </p>
+
+        <ol>
+            <li>
+                <strong>Input is sampled.</strong> Keyboard, mouse, gamepad and any
+                actions registered by plugins all refresh their "pressed / held /
+                released" state. <code>IsActionPressed</code> only returns true for
+                this exact frame.
+            </li>
+            <li>
+                <strong>Your plugin's registered actions are dispatched.</strong> The
+                <code>ActionPressed</code> / <code>ActionReleased</code> events on the
+                input service fire here, before the rest of the editor's update work
+                happens. If your plugin's action handler changes editor state, it will
+                be reflected by the time the tool system runs.
+            </li>
+            <li>
+                <strong>Editor systems update.</strong> The camera, the active tool,
+                the mesh system, the toolbar, autosave, layout, and so on.
+            </li>
+            <li>
+                <strong>Your per-frame plugin code runs.</strong> Registered
+                overlay renderers' <code>Update</code> methods and registered render
+                pass <code>Update</code> methods fire here. Read input, mutate your own
+                state, but do <em>not</em> touch the mesh system directly here; if you
+                need to change geometry, do it in response to a click and go through
+                the Block or Layer service.
+            </li>
+            <li>
+                <strong>The scene is rendered.</strong> The pipeline runs in order:
+                opaque pass first, then overlay pass, then any plugin-added render
+                passes, then ImGui. This is where your overlay renderers'
+                <code>Render</code> methods are called.
+            </li>
+            <li>
+                <strong>ImGui is rendered last.</strong> All editor windows, menu
+                items, modals and toasts are drawn on top of everything else.
+            </li>
+        </ol>
+
+        <div class="infobox tip">
+            <span class="label">The one-sentence rule</span>
+            Input and state changes during <em>update</em>, geometry changes during
+            <em>edit callbacks</em>, drawing during <em>render</em>. Mixing any two of
+            these in one place is the single biggest source of subtle plugin bugs.
+        </div>
+
+        <h2 id="concepts">4. Core concepts <a class="editlink" href="#concepts">[link]</a></h2>
+
+        <p>
+            Chunk Junk is built out of systems. A system does one job and the engine
+            ticks them all every frame. You will never add a new system yourself (Unless you design your own).
+            Instead you use a service, which is a friendlier wrapper around part of a
+            system.
+        </p>
+
+        <table class="wikitable">
+            <tr>
+                <th>System</th>
+                <th>What it does</th>
+            </tr>
+            <tr>
+                <td><code>WorldSystem</code></td>
+                <td>Holds the list of scenes (layers) and knows which one is active.</td>
+            </tr>
+            <tr>
+                <td><code>MeshSystem</code></td>
+                <td>Builds the actual triangles for each scene, in the background.</td>
+            </tr>
+            <tr>
+                <td><code>CameraSystem</code></td>
+                <td>The editor's view camera. Orbit mode or free fly mode.</td>
+            </tr>
+            <tr>
+                <td><code>ToolSystem</code></td>
+                <td>Decides which edit mode is active and forwards input to it.</td>
+            </tr>
+            <tr>
+                <td><code>RenderPipeline</code></td>
+                <td>Runs the render passes in order, every frame.</td>
+            </tr>
+        </table>
+
+        <p>
+            Services are named after what they do, not what they wrap. The Block
+            service is really the WorldSystem plus undo tracking. The Material service
+            is really the TextureManager plus the MaterialManager. You do not need to
+            know any of that. Just use the service.
+        </p>
+
+        <h3>Undo is a "first-class citizen"</h3>
+
+        <p>
+            Every destructive change in the editor goes through the undo stack,
+            including changes made by plugins. When you call
+            <code>Blocks.PlaceBlock</code> or <code>Blocks.RemoveBlock</code>, the
+            editor wraps your call in a command and pushes it onto the stack. Ctrl+Z
+            will undo it, and the History panel will show it, exactly as if the user
+            had placed the block by hand.
+        </p>
+
+        <p>
+            The one exception is <code>Layers.AddLayer</code>, which deliberately
+            skips the undo stack. Adding a hundred-thousand-block layer as one undo
+            entry would make the History panel unusable, and importers are the main
+            user of that call.
+        </p>
+
+        <h2 id="scenes">5. Scenes and blocks <a class="editlink" href="#scenes">[link]</a></h2>
+
+        <p>
+            A <strong>scene</strong> is one layer in the project. The name is a
+            leftover from an earlier design; think of it as a layer and you will be
+            fine. Every project can have as many scenes as you want. Each scene holds
+            a grid of <strong>blocks</strong>.
+        </p>
+
+        <ul>
+            <li>A normal block is a cube with a texture on each of its six faces.</li>
+            <li>An editable block is a block whose eight corners have been moved. It can be any shape you want, as long as the corners stay inside the block's own cell (unless the project opts out of that constraint).</li>
+            <li>A block position is an integer grid coordinate, written like <code>(2, 0, -1)</code>.</li>
+        </ul>
+
+        <p>
+            For rendering, the editor chops each scene into fixed size groups called
+            <strong>chunks</strong>. When you edit a block, only the chunks touching
+            that block get rebuilt. That is the whole trick behind editing big scenes
+            without a slowdown.
+        </p>
+
+        <div class="infobox">
+            <span class="label">Sizing</span>
+            A chunk is 16 blocks on each side. That number is not configurable, and
+            plugins never need to care about it.
+        </div>
+
+        <p>
+            Each scene also has an <strong>offset</strong> and a <strong>scale</strong>.
+            The offset moves the entire layer in world space; the scale stretches the
+            whole grid. Both are saved with the project. When you place a block using
+            the Block service, you pass a grid coordinate; the editor applies the
+            scene's offset and scale for you when it renders. When you need to
+            convert between the two spaces yourself (drawing an overlay, for example),
+            the underlying scene has <code>LocalToWorld</code> and
+            <code>WorldToLocal</code> helpers, but those are internal-only. From a
+            plugin, you work entirely in grid coordinates.
+        </p>
+
+        <h2 id="modes">6. Edit modes <a class="editlink" href="#modes">[link]</a></h2>
+
+        <p>
+            The editor has a bunch of edit modes. Only one is on at any given time.
+            Each one is a different way of interacting with the same scene.
+        </p>
+
+        <table class="wikitable">
+            <tr>
+                <th>Mode</th>
+                <th>What you can do in it</th>
+            </tr>
+            <tr><td>Block</td><td>Place and delete blocks and shapes.</td></tr>
+            <tr><td>Vertex</td><td>Drag individual corners of a block.</td></tr>
+            <tr><td>Edge</td><td>Drag edges of a block.</td></tr>
+            <tr><td>Face</td><td>Drag faces, and flip the diagonal on a face.</td></tr>
+            <tr><td>Paint</td><td>Paint textures onto a face.</td></tr>
+            <tr><td>Decal</td><td>Paint free form decal images on top of a face.</td></tr>
+            <tr><td>Select</td><td>Select a group of blocks, then move, copy, rotate, or mirror them.</td></tr>
+            <tr><td>Light</td><td>Move a light and aim it.</td></tr>
+            <tr><td>Camera</td><td>Move a camera layer and aim it.</td></tr>
+            <tr><td>Sculpt</td><td>Push, pull and smooth the surface in a brush-like way.</td></tr>
+        </table>
+
+        <p>
+            A plugin cannot add a brand new edit mode. What a plugin can add instead
+            is drawing on top of the 3D view (an overlay) and its own windows, which
+            is almost always what you actually wanted. See
+            <a href="#limits">What you can't do</a> for the full list.
+        </p>
+
+        <h2 id="pipeline">7. Render pipeline <a class="editlink" href="#pipeline">[link]</a></h2>
+
+        <p>
+            The pipeline draws each frame in a fixed order. It holds a list of render
+            passes and calls them one at a time.
+        </p>
+
+        <div class="diagram">One frame, drawn in this order
+            |
+            +-- Opaque pass    - solid block geometry with lighting
+            +-- Overlay pass   - grids, gizmos, selection outlines, preview shapes
+            |
+            +-- (your plugin's passes go here, if you registered any)
+            +-- ImGui UI       - editor windows, menus, modals</div>
+
+        <p>
+            A plugin can add its own render pass, or it can add an overlay renderer.
+            An overlay renderer draws helper graphics (lines, icons, small shapes)
+            directly on top of the 3D view. Overlays never end up in exported files.
+        </p>
+
+        <div class="infobox">
+            <span class="label">Where plugin passes actually go</span>
+            Plugin render passes are inserted into the pipeline <em>after</em> the
+            built-in overlay pass and <em>before</em> ImGui. The
+            <code>AddRenderPass</code> method on the render service does not expose
+            the internal insertion-point enum, so you always end up in the same
+            slot. If you need to draw something that has to run before the opaque
+            pass, an overlay renderer is almost always the better tool, because it
+            is already hooked into the correct stage.
+        </div>
+
+        <p>
+            Because your render pass runs after overlays, the depth buffer is already
+            populated by the opaque pass and the overlays have already drawn on top
+            of it. If you want your geometry to appear "on top of everything" but
+            still respect scene depth, that is exactly the behaviour you get.
+        </p>
+
+        <h2 id="plugin-basics">8. Plugin basics <a class="editlink" href="#plugin-basics">[link]</a></h2>
+
+        <p>
+            A plugin is a class library with one or more classes that implement
+            <code>IPlugin</code>. Here is the whole interface:
+        </p>
+
+        <pre><code>public interface IPlugin
 {
     string Name { get; }
     string Description { get; }
     string Author { get; }
     string Version { get; }
 
-    void Initialize(PluginContext context);
+    void Initialize(IPluginContext context);
     void Shutdown();
 }</code></pre>
-            <table>
-                <tr><th>Member</th><th>Purpose</th></tr>
-                <tr><td><code>Name</code></td><td>The plugin name shown in the Settings window.</td></tr>
-                <tr><td><code>Description</code></td><td>A short line of text that explains what the plugin does.</td></tr>
-                <tr><td><code>Author</code></td><td>The plugin author's name.</td></tr>
-                <tr><td><code>Version</code></td><td>The plugin version number, as text.</td></tr>
-                <tr><td><code>Initialize</code></td><td>The application calls this method one time, when the plugin loads.</td></tr>
-                <tr><td><code>Shutdown</code></td><td>The application calls this method one time, when the plugin unloads or is disabled.</td></tr>
-            </table>
-            <div class="rule">
-                <strong>Rule</strong>
-                Register everything inside <code>Initialize</code>. Do not register
-                windows, menu items, or render passes outside <code>Initialize</code>.
-                This rule lets the application remove your registrations correctly
-                later.
-            </div>
-            <div class="section-foot"><a href="#top">↑ back to top</a></div>
-        </section>
 
-        <section id="plugin-folder">
-            <h2>9. The Plugins Folder</h2>
-            <p>
-                The application looks for plugins inside a folder named
-                <code>Plugins</code>. This folder sits next to the application
-                program file. The application accepts two folder layouts.
-            </p>
-            <h3>9.1 Single File Plugins</h3>
-            <p>
-                Place one .dll file directly inside the <code>Plugins</code> folder.
-                Use this layout when the plugin has no extra dependency files.
-            </p>
-            <div class="diagram">Plugins/
-                └─ MySimplePlugin.dll</div>
-            <h3>9.2 Package Plugins</h3>
-            <p>
-                Place the plugin inside its own subfolder when the plugin needs extra
-                files, such as third-party dependency .dll files. Name the main .dll
-                file the same as the folder, if possible.
-            </p>
-            <div class="diagram">Plugins/
-                └─ MyModPack/
-                    ├─ MyModPack.dll
-                    ├─ MyModPack.deps.json
-                    └─ SomeDependency.dll</div>
-            <div class="note">
-                <strong>Note</strong>
-                Each package folder gets its own dependency resolution. Two plugins
-                can use different versions of the same dependency library without a
-                conflict.
-            </div>
-            <div class="section-foot"><a href="#top">↑ back to top</a></div>
-        </section>
+        <table class="wikitable">
+            <tr>
+                <th>Member</th>
+                <th>What it is for</th>
+            </tr>
+            <tr><td><code>Name</code></td><td>Shown in the Settings window, on the Plugins tab. Also used as the key for the plugin's enabled state in the user's settings file.</td></tr>
+            <tr><td><code>Description</code></td><td>One line explaining what the plugin does.</td></tr>
+            <tr><td><code>Author</code></td><td>Your name, or your team's.</td></tr>
+            <tr><td><code>Version</code></td><td>Any text you like. Nobody parses it.</td></tr>
+            <tr><td><code>Initialize</code></td><td>Called once when the plugin is enabled. Register everything here.</td></tr>
+            <tr><td><code>Shutdown</code></td><td>Called once when the plugin is disabled. Do your own cleanup here.</td></tr>
+        </table>
 
-        <section id="plugin-isolation">
-            <h2>10. Plugin Isolation</h2>
-            <p>
-                Chunk Junk loads each plugin file into its own isolated load context.
-                This isolation gives two benefits.
-            </p>
-            <ul>
-                <li><strong>Separate dependencies.</strong> Each plugin resolves its own dependency files. One plugin's dependency files do not affect another plugin.</li>
-                <li><strong>Unloading.</strong> The application can fully unload a plugin from memory. A user can rebuild a plugin .dll file and reload it, without restarting the application.</li>
-            </ul>
-            <div class="caution">
-                <strong>Caution</strong>
-                A plugin stays loaded in memory if something outside the plugin still
-                holds a reference to it. A common cause is a static event subscription
-                that the plugin never removes. Always unregister your own event
-                handlers in <code>Shutdown</code>, unless you registered them through
-                <code>PluginContext</code>. See Chapter 12.
-            </div>
-            <div class="section-foot"><a href="#top">↑ back to top</a></div>
-        </section>
+        <div class="infobox warn">
+            <span class="label">Name is the identity</span>
+            The plugin's <code>Name</code> is the key that decides whether the plugin
+            is enabled on next launch. If you rename your plugin, the editor will
+            treat it as a brand-new plugin and enable it by default. Pick a name you
+            are happy with, because changing it later is effectively a reset.
+        </div>
 
-        <section id="writing-a-plugin">
-            <h2>11. Writing a Plugin</h2>
-            <p>This section shows a minimal, working plugin.</p>
-            <pre><code>using ChunkJunk.Plugins;
+        <div class="infobox">
+            <span class="label">One class, or many?</span>
+            A single .dll can contain more than one <code>IPlugin</code> class. Each
+            one becomes a separate plugin in the Settings window, with its own
+            enabled state. Most plugins have exactly one.
+        </div>
+
+        <h2 id="folder">9. The Plugins folder <a class="editlink" href="#folder">[link]</a></h2>
+
+        <p>
+            Plugins live in a folder called <code>Plugins</code>, sitting right next to
+            the editor's .exe. You can lay the folder out two ways.
+        </p>
+
+        <h3>Single file</h3>
+        <p>
+            If your plugin is one .dll with no extra dependency files, just drop it
+            into <code>Plugins</code> by itself.
+        </p>
+
+        <div class="diagram">Plugins/
+            +-- MySimplePlugin.dll</div>
+
+        <h3>Folder per plugin</h3>
+        <p>
+            If your plugin ships extra files (its own copy of a NuGet package, a
+            config file, an icon), put everything in its own subfolder inside
+            <code>Plugins</code>. Name the main .dll the same as the folder when you
+            can; it is not required but it makes the folder easier to read.
+        </p>
+
+        <div class="diagram">Plugins/
+            +-- MyBigPlugin/
+            +-- MyBigPlugin.dll
+            +-- MyBigPlugin.deps.json
+            +-- Newtonsoft.Json.dll
+            +-- icon.png</div>
+
+        <div class="infobox tip">
+            <span class="label">"Why does this matter?"</span>
+            Each subfolder gets its own dependency resolution. Two plugins can ship
+            two different versions of the same dependency and neither one will
+            interfere with the other.
+        </div>
+
+        <h3>Discovery rules</h3>
+
+        <p>
+            The loader scans the Plugins folder (or whatever folder the user has
+            pointed it at in Settings) with these rules:
+        </p>
+
+        <ul>
+            <li>
+                Every <code>*.dll</code> directly inside the folder is considered a
+                candidate.
+            </li>
+            <li>
+                Every subfolder is inspected once. If a <code>.dll</code> exists whose
+                name matches the folder name, only that .dll is loaded and the rest
+                of the folder is treated as its support files. Otherwise, every
+                <code>.dll</code> inside the subfolder is considered a candidate.
+            </li>
+            <li>
+                A .dll that contains no types implementing <code>IPlugin</code> is
+                silently skipped (this is how dependency DLLs get ignored).
+            </li>
+            <li>
+                A .dll whose plugin types cannot be loaded (missing dependency,
+                partial type load) is reported in the console and skipped without
+                bringing down the loader.
+            </li>
+        </ul>
+
+        <h2 id="isolation">10. Isolation and unloading <a class="editlink" href="#isolation">[link]</a></h2>
+
+        <p>
+            Every plugin loads into its own little world. The editor does not share
+            its loaded code with your plugin, and it does not share your plugin with
+            any other plugin. Concretely, this is a collectible
+            <code>AssemblyLoadContext</code> per plugin, with a bespoke resolution
+            rule.
+        </p>
+
+        <p>You get three things out of this:</p>
+
+        <ul>
+            <li>Your dependency files only affect your plugin.</li>
+            <li>The editor can fully unload your plugin from memory, so you can rebuild it and reload it without restarting.</li>
+            <li>Two plugins can ship different versions of the same NuGet package without conflict.</li>
+        </ul>
+
+        <div class="infobox">
+            <span class="label">What gets shared, what doesn't</span>
+            The host always shares a small set of well-known assemblies with plugins:
+            <code>ChunkJunk</code> itself, <code>OpenTK</code> and its sub-assemblies,
+            <code>ImGui.NET</code>, <code>AssimpNet</code>, <code>StbImageSharp</code>,
+            <code>StbImageWriteSharp</code> and <code>Vortice.Mathematics</code>.
+            Anything else is resolved from your plugin's own folder. If a reference
+            cannot be resolved from either place, the loader prints a warning and
+            the plugin may fail to load.
+        </div>
+
+        <div class="infobox warn">
+            <span class="label">Watch out</span>
+            Your plugin will not unload if something else still holds a reference to
+            it. The usual culprit is a static event subscription you forgot to remove.
+            Always unsubscribe, or use the context's event hooks which clean themselves
+            up automatically.
+        </div>
+
+        <p>
+            Reload and Remove are buttons on the Plugins tab in Settings. Test both
+            before you publish anything.
+        </p>
+
+        <h2 id="hello">11. Your first plugin <a class="editlink" href="#hello">[link]</a></h2>
+
+        <p>
+            Here is a complete, tiny plugin. It adds one menu item and logs a message
+            when you click it.
+        </p>
+
+        <pre><code>using ChunkJunk.Plugins.Api;
 
 public class HelloWorldPlugin : IPlugin
 {
@@ -787,424 +1159,2089 @@ public class HelloWorldPlugin : IPlugin
     public string Author =&gt; "Example Author";
     public string Version =&gt; "1.0.0";
 
-    private PluginContext _context;
+    private IPluginContext _ctx;
 
-    public void Initialize(PluginContext context)
+    public void Initialize(IPluginContext context)
     {
-        _context = context;
+        _ctx = context;
 
-        // Add a menu item under the Plugins menu.
-        _context.AddMenuBarItem("Say Hello", () =&gt;
+        _ctx.UI.AddMenuBarItem("Say Hello", () =&gt;
         {
-            _context.Info("Hello from a plugin!");
+            _ctx.Log.Info("Hello from a plugin.");
         });
     }
 
     public void Shutdown()
     {
-        // Chunk Junk removes the menu item automatically.
-        // Add any extra cleanup your plugin needs here.
+        // Nothing to do. The editor removes the menu item on its own.
     }
 }</code></pre>
-            <p>
-                Build the project as a class library. Copy the built .dll file (and
-                any dependency files) into the <code>Plugins</code> folder. Start the
-                application. The plugin loads automatically.
-            </p>
-            <h3>11.1 Registering Custom Actions</h3>
-            <p>
-                A plugin can add its own keyboard or mouse shortcut. Chunk Junk calls
-                a shortcut an <strong>action</strong>. Use the input service to
-                register a new action.
-            </p>
-            <pre><code>_context.RegisterAction(
+
+        <p>
+            Build it as a class library, copy the .dll into <code>Plugins</code>,
+            start the editor. Your plugin shows up under Plugins in the menu bar,
+            and in the Settings window under Plugins.
+        </p>
+
+        <h3>Adding a rebindable shortcut</h3>
+
+        <p>
+            You can also register a named action. Chunk Junk calls these actions
+            rather than "hotkeys" because the user is allowed to rebind them.
+        </p>
+
+        <pre><code>_ctx.Input.RegisterAction(
     "MyPlugin.DoThing",
     "My Plugin",
     new KeyBinding(ModifierKeys.Ctrl, Keys.G));</code></pre>
-            <p>
-                A registered action appears in the Controls settings tab. A user can
-                change the shortcut key. The default binding never overwrites a
-                binding the user already changed.
-            </p>
-            <div class="section-foot"><a href="#top">↑ back to top</a></div>
-        </section>
 
-        <section id="plugin-lifecycle">
-            <h2>12. Plugin Lifecycle</h2>
-            <p>
-                A plugin moves through several states. The table below lists each
-                state and what happens in that state.
-            </p>
-            <table>
-                <tr><th>State</th><th>What Happens</th></tr>
-                <tr><td>Load</td><td>The application reads the .dll file and finds the <code>IPlugin</code> class.</td></tr>
-                <tr><td>Enable</td><td>The application creates a <code>PluginContext</code> and calls <code>Initialize</code>.</td></tr>
-                <tr><td>Disable</td><td>The application calls <code>Shutdown</code>, then removes every registration the plugin made through its context.</td></tr>
-                <tr><td>Reload</td><td>The application disables the plugin, releases the .dll file from memory, and loads it again.</td></tr>
-                <tr><td>Unload</td><td>The application removes the plugin from the active list and releases the .dll file from memory.</td></tr>
-            </table>
-            <p>
-                A user controls these states from the Settings window, on the
-                Plugins tab. A user can turn a plugin on or off, reload a plugin, or
-                remove a plugin, without closing the application.
-            </p>
-            <div class="rule">
-                <strong>Rule</strong>
-                Register windows, menu items, render passes, overlay renderers, and
-                importers or exporters only through <code>PluginContext</code>. The
-                application removes these registrations automatically when the
-                plugin is disabled. Registrations made outside
-                <code>PluginContext</code> are not removed automatically.
-            </div>
-            <div class="section-foot"><a href="#top">↑ back to top</a></div>
-        </section>
+        <p>
+            Once registered, the action shows up in Settings under Controls. The user
+            can rebind it. If the key is already taken, the user's existing binding
+            wins; your default is only used when nothing is set.
+        </p>
 
-        <section id="context-overview">
-            <h2>13. The Plugin Context</h2>
-            <p>
-                <code>PluginContext</code> is the object the application gives to
-                <code>Initialize</code>. The context is the plugin's connection to
-                the rest of the application. Each plugin receives its own separate
-                context.
-            </p>
-            <p>
-                The context groups its features into <strong>services</strong>.
-                Each service covers one area of the application. The sections below
-                describe every service, at a level a plugin developer needs. This
-                guide does not list every method parameter.
-            </p>
-            <table>
-                <tr><th>Service</th><th>Area</th></tr>
-                <tr><td>Block Service</td><td>Placing and removing blocks</td></tr>
-                <tr><td>Selection Service</td><td>Reading and changing the current selection</td></tr>
-                <tr><td>Undo Service</td><td>Undo and redo history</td></tr>
-                <tr><td>Event Service</td><td>Notifications about scene and block changes</td></tr>
-                <tr><td>Render Service</td><td>Adding custom render passes</td></tr>
-                <tr><td>Lighting Service</td><td>Reading and adjusting lighting data each frame</td></tr>
-                <tr><td>Overlay Service</td><td>Adding custom overlay graphics</td></tr>
-                <tr><td>Interface Service</td><td>Adding menu items and windows</td></tr>
-                <tr><td>Input Service</td><td>Reading input and registering shortcuts</td></tr>
-                <tr><td>Log Service</td><td>Showing messages to the user</td></tr>
-                <tr><td>Import/Export Service</td><td>Adding new file formats</td></tr>
-            </table>
-            <div class="section-foot"><a href="#top">↑ back to top</a></div>
-        </section>
+        <p>
+            To react to the action you subscribe to the ActionPressed event on the
+            input service and check the name.
+        </p>
 
-        <section id="svc-block">
-            <h2>14. Block Service</h2>
-            <p>The block service places and removes blocks. Every change goes through the undo system automatically.</p>
-            <table>
-                <tr><th>Method</th><th>Purpose</th></tr>
-                <tr><td><code>PlaceBlock(scene, position, block)</code></td><td>Places a block at a grid position.</td></tr>
-                <tr><td><code>RemoveBlock(scene, position)</code></td><td>Removes the block at a grid position.</td></tr>
-                <tr><td><code>HasBlock(scene, position)</code></td><td>Reports whether a block exists at a position.</td></tr>
-                <tr><td><code>GetBlock(scene, position)</code></td><td>Returns the block at a position.</td></tr>
-            </table>
-            <div class="section-foot"><a href="#top">↑ back to top</a></div>
-        </section>
+        <pre><code>_ctx.Input.ActionPressed += action =&gt;
+{
+    if (action == "MyPlugin.DoThing")
+        _ctx.Log.Info("You pressed the shortcut.");
+};</code></pre>
 
-        <section id="svc-selection">
-            <h2>15. Selection Service</h2>
-            <p>The selection service reads and changes the current block selection.</p>
-            <table>
-                <tr><th>Member</th><th>Purpose</th></tr>
-                <tr><td><code>GetSelectedBlocks()</code></td><td>Returns the current set of selected block positions.</td></tr>
-                <tr><td><code>SelectBlocks(positions)</code></td><td>Replaces the current selection.</td></tr>
-                <tr><td><code>ClearSelection()</code></td><td>Clears the current selection.</td></tr>
-                <tr><td><code>SelectionChanged</code></td><td>An event that fires when the selection changes.</td></tr>
-            </table>
-            <div class="section-foot"><a href="#top">↑ back to top</a></div>
-        </section>
+        <div class="infobox tip">
+            <span class="label">Category is free-form</span>
+            The category string you pass to <code>RegisterAction</code> is what the
+            Controls page uses to group your action. The editor's own categories
+            (Edit Actions, Mode Switching, Camera Controls, ...) are just strings,
+            and you can invent your own. Plugin actions tend to group together under
+            a category named after the plugin.
+        </div>
 
-        <section id="svc-undo">
-            <h2>16. Undo Service</h2>
-            <p>
-                The undo service lets a plugin add its own changes to the undo
-                history. This keeps plugin actions consistent with built-in actions.
-            </p>
-            <table>
-                <tr><th>Method</th><th>Purpose</th></tr>
-                <tr><td><code>Execute(command)</code></td><td>Runs a command and adds it to the undo history.</td></tr>
-                <tr><td><code>Undo()</code></td><td>Undoes the last action.</td></tr>
-                <tr><td><code>Redo()</code></td><td>Redoes the last undone action.</td></tr>
-            </table>
-            <div class="note">
-                <strong>Note</strong>
-                A custom command must implement the application's command interface.
-                This guide does not describe how to write a custom command. Use the
-                block service or selection service for most plugin needs instead.
-            </div>
-            <div class="section-foot"><a href="#top">↑ back to top</a></div>
-        </section>
+        <h2 id="lifecycle">12. Lifecycle <a class="editlink" href="#lifecycle">[link]</a></h2>
 
-        <section id="svc-events">
-            <h2>17. Event Service</h2>
-            <p>The event service notifies a plugin about changes in the scene.</p>
-            <table>
-                <tr><th>Event</th><th>Fires When</th></tr>
-                <tr><td><code>BlockPlaced</code></td><td>A block appears at a position.</td></tr>
-                <tr><td><code>BlockRemoved</code></td><td>A block disappears from a position.</td></tr>
-                <tr><td><code>ActiveSceneChanged</code></td><td>The user switches the active scene (layer).</td></tr>
-            </table>
-            <div class="rule">
-                <strong>Rule</strong>
-                Always subscribe to these events through the context. The context
-                removes the subscription automatically when the plugin is disabled.
-            </div>
-            <div class="section-foot"><a href="#top">↑ back to top</a></div>
-        </section>
+        <p>
+            A plugin goes through these states. Most of them you will never think
+            about, but a couple matter for cleanup.
+        </p>
 
-        <section id="svc-render">
-            <h2>18. Render Service</h2>
-            <p>
-                The render service adds a custom render pass to the render pipeline.
-                A render pass draws once per frame, at a chosen point in the
-                pipeline order.
-            </p>
-            <table>
-                <tr><th>Method</th><th>Purpose</th></tr>
-                <tr><td><code>AddRenderPass(pass)</code></td><td>Adds a render pass to the pipeline.</td></tr>
-                <tr><td><code>RemoveRenderPass(pass)</code></td><td>Removes a render pass from the pipeline.</td></tr>
-            </table>
-            <div class="section-foot"><a href="#top">↑ back to top</a></div>
-        </section>
+        <table class="wikitable">
+            <tr>
+                <th>State</th>
+                <th>What happens</th>
+            </tr>
+            <tr>
+                <td>Load</td>
+                <td>The editor reads the .dll and finds your <code>IPlugin</code> class.</td>
+            </tr>
+            <tr>
+                <td>Enable</td>
+                <td>The editor creates a context and calls <code>Initialize</code>.</td>
+            </tr>
+            <tr>
+                <td>Disable</td>
+                <td>The editor calls <code>Shutdown</code> and removes every registration you made through the context.</td>
+            </tr>
+            <tr>
+                <td>Reload</td>
+                <td>Disable, unload the file, load it again, enable.</td>
+            </tr>
+            <tr>
+                <td>Unload</td>
+                <td>The editor removes the plugin from its list and lets the file go.</td>
+            </tr>
+        </table>
 
-        <section id="svc-lighting">
-            <h2>19. Lighting Service</h2>
-            <p>
-                The lighting service lets a plugin read or adjust lighting values
-                just before the application uploads them to the graphics card. A
-                plugin can also run its own drawing code just before or after the
-                normal scene render.
-            </p>
-            <table>
-                <tr><th>Event</th><th>Fires</th></tr>
-                <tr><td><code>BeforeLightingSetup</code></td><td>Just before the application prepares lighting data for the frame.</td></tr>
-                <tr><td><code>AfterLightingSetup</code></td><td>Just after lighting data is prepared.</td></tr>
-                <tr><td><code>BeforeSceneRender</code></td><td>Just before the application draws the scene.</td></tr>
-                <tr><td><code>AfterSceneRender</code></td><td>Just after the application draws the scene.</td></tr>
-            </table>
-            <div class="caution">
-                <strong>Caution</strong>
-                Only change lighting values during <code>BeforeLightingSetup</code>.
-                Changes made at any other time may be ignored.
-            </div>
-            <div class="section-foot"><a href="#top">↑ back to top</a></div>
-        </section>
+        <p>
+            Reload is a bit more than a cycle of the other states. The editor
+            snapshots the open/closed state of every window the plugin owns before
+            shutting it down, then restores those states after re-initializing. So a
+            plugin's window that was open before a reload is still open afterward,
+            even though the underlying object is brand new.
+        </p>
 
-        <section id="svc-overlay">
-            <h2>20. Overlay Service</h2>
-            <p>
-                The overlay service adds custom helper graphics on top of the 3D
-                scene. Overlay graphics include lines, shapes, and icons. Overlay
-                graphics do not affect the final exported scene.
-            </p>
-            <table>
-                <tr><th>Method</th><th>Purpose</th></tr>
-                <tr><td><code>AddOverlayRenderer(renderer)</code></td><td>Adds a new overlay renderer.</td></tr>
-                <tr><td><code>InsertOverlayRenderer(index, renderer)</code></td><td>Adds a new overlay renderer at a chosen position in the draw order.</td></tr>
-                <tr><td><code>RemoveOverlayRenderer(renderer)</code></td><td>Removes an overlay renderer.</td></tr>
-                <tr><td><code>ReplaceOverlayRenderer&lt;T&gt;(renderer)</code></td><td>Replaces a built-in overlay renderer with a custom one. The application restores the original renderer when the plugin is disabled.</td></tr>
-            </table>
-            <div class="section-foot"><a href="#top">↑ back to top</a></div>
-        </section>
+        <div class="infobox tip">
+            <span class="label">The golden rule that fixes all bugs and problems (I wish)</span>
+            If you register it through the context, the editor cleans it up. If you
+            register it anywhere else, you clean it up yourself in
+            <code>Shutdown</code>.
+        </div>
 
-        <section id="svc-imgui">
-            <h2>21. Interface Service</h2>
-            <p>The interface service adds menu items and windows to the editor.</p>
-            <table>
-                <tr><th>Method</th><th>Purpose</th></tr>
-                <tr><td><code>AddMenuBarItem(label, action)</code></td><td>Adds an item under the Plugins menu. The action runs when the user clicks the item.</td></tr>
-                <tr><td><code>AddWindow(title, drawAction)</code></td><td>Adds a new dockable window. The window title must be unique.</td></tr>
-                <tr><td><code>RemoveWindow(title)</code></td><td>Removes a window the plugin added earlier.</td></tr>
-            </table>
-            <div class="note">
-                <strong>Note</strong>
-                A window's draw code runs every frame, while the window is open. Keep
-                this code fast. Slow draw code will slow down the whole application.
-            </div>
-            <div class="section-foot"><a href="#top">↑ back to top</a></div>
-        </section>
+        <h3>What "cleanup" actually covers</h3>
 
-        <section id="svc-input">
-            <h2>22. Input Service</h2>
-            <p>
-                The input service reads keyboard, mouse, and action states. An
-                action is a named, rebindable shortcut.
-            </p>
-            <table>
-                <tr><th>Method</th><th>Purpose</th></tr>
-                <tr><td><code>IsActionPressed(name)</code></td><td>True on the one frame the action's shortcut was pressed.</td></tr>
-                <tr><td><code>IsActionHeld(name)</code></td><td>True on every frame the action's shortcut is held down.</td></tr>
-                <tr><td><code>IsActionReleased(name)</code></td><td>True on the one frame the action's shortcut was released.</td></tr>
-                <tr><td><code>RegisterAction(name, category, defaultBinding)</code></td><td>Adds a new, plugin-defined action.</td></tr>
-                <tr><td><code>MousePosition</code></td><td>The current mouse position on screen.</td></tr>
-            </table>
-            <div class="section-foot"><a href="#top">↑ back to top</a></div>
-        </section>
+        <ul>
+            <li>Windows added with <code>UI.AddWindow</code>.</li>
+            <li>Menu items added with <code>UI.AddMenuBarItem</code>.</li>
+            <li>Render passes added with <code>Rendering.AddRenderPass</code>.</li>
+            <li>Overlay renderers added with <code>Overlays.AddOverlayRenderer</code>.</li>
+            <li>Overlay renderers swapped out with <code>Overlays.ReplaceOverlayRenderer</code>, which are restored to the original.</li>
+            <li>Lighting, overlay and event subscriptions that go through the context.</li>
+            <li>Importers and exporters registered through the context.</li>
+        </ul>
 
-        <section id="svc-log">
-            <h2>23. Log Service</h2>
-            <p>The log service shows short messages to the user, and writes them to the console window.</p>
-            <table>
-                <tr><th>Method</th><th>Purpose</th></tr>
-                <tr><td><code>Info(message)</code></td><td>Shows a normal message.</td></tr>
-                <tr><td><code>Warning(message)</code></td><td>Shows a warning message.</td></tr>
-                <tr><td><code>Error(message)</code></td><td>Shows an error message.</td></tr>
-                <tr><td><code>Debug(message)</code></td><td>Shows a message meant for testing.</td></tr>
-            </table>
-            <div class="section-foot"><a href="#top">↑ back to top</a></div>
-        </section>
+        <p>
+            Everything else is your responsibility. The most common thing you could
+            forget is a static event subscription that does not go through the
+            context; see <a href="#isolation">Isolation and unloading</a>.
+        </p>
 
-        <section id="svc-importexport">
-            <h2>24. Import/Export Service</h2>
-            <p>
-                The import/export service adds new file formats to the File menu.
-            </p>
-            <table>
-                <tr><th>Method</th><th>Purpose</th></tr>
-                <tr><td><code>RegisterImporter(importer)</code></td><td>Adds a new item under File &gt; Import.</td></tr>
-                <tr><td><code>RegisterExporter(exporter)</code></td><td>Adds a new item under File &gt; Export as.</td></tr>
-            </table>
-            <p>
-                An importer or exporter must implement the <code>IImporter</code> or
-                <code>IExporter</code> interface. Each interface defines a display
-                name, a list of file extensions, and one method that runs the actual
-                import or export.
-            </p>
-            <div class="section-foot"><a href="#top">↑ back to top</a></div>
-        </section>
+        <h2 id="context">13. The context object <a class="editlink" href="#context">[link]</a></h2>
 
-        <section id="best-practices">
-            <h2>25. Best Practices</h2>
-            <ul>
-                <li>Register every window, menu item, render pass, and event through <code>PluginContext</code>. This lets the application clean up correctly.</li>
-                <li>Use short, clear names for actions, windows, and menu items.</li>
-                <li>Use the block service and selection service for scene edits, instead of changing scene data directly. This keeps undo history correct.</li>
-                <li>Keep per-frame code fast. Per-frame code includes window draw code and overlay draw code.</li>
-                <li>Do not store a reference to another plugin. Plugins can load, unload, and reload independently.</li>
-                <li>Test the Reload and Remove buttons in the Settings window, on the Plugins tab, before you share your plugin.</li>
-            </ul>
-            <div class="section-foot"><a href="#top">↑ back to top</a></div>
-        </section>
+        <p>
+            <code>IPluginContext</code> is what your plugin receives in
+            <code>Initialize</code>. It is the only connection you have to the editor.
+            Everything else is reached through it.
+        </p>
 
-        <section id="troubleshooting">
-            <h2>26. Troubleshooting</h2>
-            <table>
-                <tr><th>Problem</th><th>Likely Cause</th></tr>
-                <tr><td>The plugin does not appear in the Plugins tab.</td><td>The .dll file is not inside the <code>Plugins</code> folder, or the class does not implement <code>IPlugin</code>.</td></tr>
-                <tr><td>The plugin will not fully unload.</td><td>Something outside the plugin still holds a reference to it. Check for event subscriptions made outside <code>PluginContext</code>.</td></tr>
-                <tr><td>A menu item still appears after the plugin is disabled.</td><td>The menu item was added outside <code>PluginContext.AddMenuBarItem</code>.</td></tr>
-                <tr><td>A shortcut does not work.</td><td>Another action may already use the same key combination. Check the Controls settings tab for a conflict.</td></tr>
-            </table>
-            <div class="section-foot"><a href="#top">↑ back to top</a></div>
-        </section>
+        <p>
+            The context groups features into services, one per area. Here is the whole
+            list.
+        </p>
 
-        <section id="glossary">
-            <h2>27. Glossary</h2>
-            <table>
-                <tr><th>Term</th><th>Meaning</th></tr>
-                <tr><td>Action</td><td>A named, rebindable keyboard or mouse shortcut.</td></tr>
-                <tr><td>Block</td><td>One cube unit of geometry inside a scene.</td></tr>
-                <tr><td>Chunk</td><td>A fixed-size group of blocks, used to speed up mesh building.</td></tr>
-                <tr><td>Edit mode</td><td>The current type of editing the user is performing, such as Block, Vertex, or Paint.</td></tr>
-                <tr><td>Overlay</td><td>Helper graphics drawn on top of the 3D scene, not part of the final export.</td></tr>
-                <tr><td>Plugin</td><td>A separate program file that adds features to Chunk Junk.</td></tr>
-                <tr><td>Plugin context</td><td>The object a plugin uses to reach application services.</td></tr>
-                <tr><td>Render pass</td><td>One drawing step inside the render pipeline.</td></tr>
-                <tr><td>Scene</td><td>One layer of the project. A project can hold many scenes.</td></tr>
-                <tr><td>Service</td><td>A grouped set of related features inside the plugin context.</td></tr>
-            </table>
-            <div class="section-foot"><a href="#top">↑ back to top</a></div>
-        </section>
+        <table class="wikitable">
+            <tr>
+                <th>Property</th>
+                <th>Interface</th>
+                <th>What it does</th>
+            </tr>
+            <tr><td><code>Blocks</code></td><td><code>IBlockService</code></td><td>Place, remove, and read blocks.</td></tr>
+            <tr><td><code>Layers</code></td><td><code>ILayerService</code></td><td>Add whole new scenes in one call.</td></tr>
+            <tr><td><code>Materials</code></td><td><code>IMaterialService</code></td><td>Create materials and save textures.</td></tr>
+            <tr><td><code>Editor</code></td><td><code>IEditorService</code></td><td>Read and set the current tile, material, and world bounds.</td></tr>
+            <tr><td><code>Selection</code></td><td><code>ISelectionService</code></td><td>Read and change the current selection.</td></tr>
+            <tr><td><code>Undo</code></td><td><code>IUndoService</code></td><td>Push your own commands onto the undo stack.</td></tr>
+            <tr><td><code>Events</code></td><td><code>IEventService</code></td><td>Notifications when blocks or scenes change.</td></tr>
+            <tr><td><code>Rendering</code></td><td><code>IRenderService</code></td><td>Add your own render pass.</td></tr>
+            <tr><td><code>Lighting</code></td><td><code>ILightingService</code></td><td>Hook into the lighting step each frame.</td></tr>
+            <tr><td><code>Overlays</code></td><td><code>IOverlayService</code></td><td>Draw helper graphics on top of the scene.</td></tr>
+            <tr><td><code>UI</code></td><td><code>IImGuiService</code></td><td>Add menu items and windows.</td></tr>
+            <tr><td><code>Input</code></td><td><code>IInputService</code></td><td>Read input and register shortcuts.</td></tr>
+            <tr><td><code>Log</code></td><td><code>ILogService</code></td><td>Print messages to the user.</td></tr>
+            <tr><td><code>ImportExport</code></td><td><code>IImportExportService</code></td><td>Register new file formats.</td></tr>
+            <tr><td><code>Assets</code></td><td><code>IAssetService</code></td><td>Find asset paths and open file dialogs.</td></tr>
+        </table>
 
-        <footer>
-            Chunk Junk Plugin &amp; Creator Documentation.
-        </footer>
+        <p>
+            Every service property is non-null for the lifetime of the context.
+            Store the context in a field in your plugin and reach through it from
+            anywhere else you need to.
+        </p>
+
+        <h2 id="svc-block">14. Block service <a class="editlink" href="#svc-block">[link]</a></h2>
+
+        <p>
+            Use this to place and remove blocks in the currently active scene. Every
+            change becomes one undo step.
+        </p>
+
+        <table class="wikitable">
+            <tr>
+                <th>Method</th>
+                <th>What it does</th>
+            </tr>
+            <tr>
+                <td><code>HasBlock(Vector3i pos)</code></td>
+                <td>True if there is a block at that grid position.</td>
+            </tr>
+            <tr>
+                <td><code>GetBlock(Vector3i pos)</code></td>
+                <td>Returns a <code>BlockData</code>, or null if there is no block there.</td>
+            </tr>
+            <tr>
+                <td><code>PlaceBlock(Vector3i pos, BlockData block)</code></td>
+                <td>Places a block. Overwrites whatever was there.</td>
+            </tr>
+            <tr>
+                <td><code>RemoveBlock(Vector3i pos)</code></td>
+                <td>Removes the block, if there is one.</td>
+            </tr>
+        </table>
+
+        <h3>BlockData</h3>
+
+        <p>
+            <code>BlockData</code> is the DTO you use to describe a block. It carries
+            the six face textures plus optional editable block data.
+        </p>
+
+        <pre><code>var block = BlockData.Uniform(tile, materialId);
+
+// Give this block custom corners. (Or leave as is for normal block mesh)
+block.Vertices = new Vector3[]
+{
+    new(0, 0, 0), new(1, 0, 0), new(0, 1, 0), new(1, 1, 0),
+    new(0, 0, 1), new(1, 0, 1), new(0, 1, 1), new(1, 1, 1),
+};
+
+// Mark some faces as using world-tied UVs. (Optional)
+block.UVModeFlags = 0x3F; 
+
+// Flip the diagonal on the top and bottom faces. (Optional)
+block.TriangulationFlags = 0x21;</code></pre>
+
+        <p>
+            If you set any of those three optional pieces, the editor creates a
+            matching editable block for you. If you leave them alone, you get a plain
+            cube.
+        </p>
+
+        <div class="infobox warn">
+            <span class="label">Bulk changes</span>
+            If you need to place tens of thousands of blocks, do not call
+            <code>PlaceBlock</code> in a loop. Use the Layer service instead; it is
+            much faster and it does not fill the undo stack with one entry per block.
+        </div>
+
+        <h3>What BlockData does <em>not</em> carry</h3>
+
+        <p>
+            A <code>BlockData</code> exposes the six face tiles, the six face
+            materials, the eight corner positions, the per-face triangulation flags
+            and the per-face UV-mode flags. It does <em>not</em> expose per-face UV
+            transforms (rotate / flip X / flip Y), per-face fixed-UV axes, or decal
+            overlays. Those are internal-only and cannot be set through the plugin
+            API. If you need a face to have a rotated UV, you cannot get that from a
+            plugin right now; see <a href="#limits">What you can't do</a>.
+        </p>
+
+        <h2 id="svc-layer">15. Layer service <a class="editlink" href="#svc-layer">[link]</a></h2>
+
+        <p>
+            Use this to add an entire new scene to the project in one call. This is
+            what importers use. It skips the undo stack on purpose, because a layer
+            with a hundred thousand blocks in it should not become one undo step.
+        </p>
+
+        <table class="wikitable">
+            <tr>
+                <th>Member</th>
+                <th>What it does</th>
+            </tr>
+            <tr>
+                <td><code>LayerCount</code></td>
+                <td>How many layers are currently in the project.</td>
+            </tr>
+            <tr>
+                <td><code>AddLayer(string name, IReadOnlyDictionary&lt;Vector3i, BlockData&gt; blocks)</code></td>
+                <td>Adds a new layer with the given blocks, makes it active, and returns its index.</td>
+            </tr>
+            <tr>
+                <td><code>SetActiveLayer(int index)</code></td>
+                <td>Switches the active layer. Pass -1 for "no active layer".</td>
+            </tr>
+        </table>
+
+        <pre><code>var blocks = new Dictionary&lt;Vector3i, BlockData&gt;();
+foreach (var pos in positions)
+    blocks[pos] = BlockData.Uniform(tile, materialId);
+
+_ctx.Layers.AddLayer("My Import", blocks);
+
+// If you added several layers, call this once at the end.
+_ctx.Editor.RebuildMeshes();</code></pre>
+
+        <div class="infobox tip">
+            <span class="label">When to rebuild</span>
+            <code>AddLayer</code> already builds the mesh for its own layer. Only call
+            <code>RebuildMeshes</code> if you added more than one layer, or if you
+            need the whole project rebuilt for some other reason.
+        </div>
+
+        <h3>What AddLayer will not do</h3>
+
+        <ul>
+            <li>It will not place the new layer under a folder. It always lands at the top of the tree.</li>
+            <li>It will not add the layer to the undo stack. See the note above.</li>
+            <li>It will not reject an empty <code>blocks</code> dictionary silently; it throws an <code>ArgumentException</code>. If you want an empty layer, create one through the UI instead.</li>
+            <li>It will not set a non-default offset or scale on the scene. Those stay at identity.</li>
+        </ul>
+
+        <h2 id="svc-material">16. Material service <a class="editlink" href="#svc-material">[link]</a></h2>
+
+        <p>
+            Use this when you need to create a material from scratch. It handles
+            saving the PNG, uploading the texture, and registering the material all in
+            one shot.
+        </p>
+
+        <table class="wikitable">
+            <tr>
+                <th>Member</th>
+                <th>What it does</th>
+            </tr>
+            <tr>
+                <td><code>DefaultMaterialId</code></td>
+                <td>The Guid of the built-in Default material. Never empty.</td>
+            </tr>
+            <tr>
+                <td><code>PrototypeMaterialId</code></td>
+                <td>The Guid of the built-in Prototype material. Never empty.</td>
+            </tr>
+            <tr>
+                <td><code>CreateMaterial(string name, byte[] rgba, int width, int height, int tileSize)</code></td>
+                <td>Saves the pixels as a PNG in the project's Materials folder, uploads it, and registers a material. Returns its Guid.</td>
+            </tr>
+            <tr>
+                <td><code>GetMaterialName(Guid id)</code></td>
+                <td>The display name of a material, or null if the Guid is unknown.</td>
+            </tr>
+            <tr>
+                <td><code>SavePng(byte[] rgba, int width, int height, string path)</code></td>
+                <td>Writes an RGBA buffer to a PNG file at an exact path.</td>
+            </tr>
+        </table>
+
+        <pre><code>byte[] pixels = ...; // width * height * 4 bytes, RGBA order
+
+Guid mat = _ctx.Materials.CreateMaterial(
+    "Imported Texture",
+    pixels,
+    width,
+    height,
+    tileSize: 16);</code></pre>
+
+        <div class="infobox warn">
+            <span class="label">Main thread only</span>
+            <code>CreateMaterial</code> talks to OpenGL, so you can only call it from
+            the main thread. If you are loading a file on a background thread, decode
+            the pixels there and then hop back to the main thread before creating the
+            material.
+        </div>
+
+        <h3>What you can and can't do with materials</h3>
+
+        <ul>
+            <li>
+                You <em>can</em> create a brand-new material and reference it from a
+                block you place.
+            </li>
+            <li>
+                You <em>can</em> ask for a material's display name by Guid.
+            </li>
+            <li>
+                You <em>can</em> save arbitrary RGBA data to disk as a PNG, which is
+                handy for a plugin's own cache files.
+            </li>
+            <li>
+                You <em>cannot</em> edit an existing material in place. There is no
+                "SetMaterialAtlas" or "RenameMaterial" on the plugin API. The
+                built-in Default and Prototype materials are also protected from
+                plugin-side modification, though nothing stops you from referencing
+                them from a new block.
+            </li>
+            <li>
+                You <em>cannot</em> delete a material. Deletion is only exposed in
+                the Material Editor window.
+            </li>
+        </ul>
+
+        <h2 id="svc-editor">17. Editor service <a class="editlink" href="#svc-editor">[link]</a></h2>
+
+        <p>
+            Small odds and ends about the current editor state.
+        </p>
+
+        <table class="wikitable">
+            <tr>
+                <th>Member</th>
+                <th>What it does</th>
+            </tr>
+            <tr>
+                <td><code>CurrentTile</code></td>
+                <td>The selected tile in the active material's atlas. Read or write.</td>
+            </tr>
+            <tr>
+                <td><code>CurrentMaterialId</code></td>
+                <td>The active material. Read or write.</td>
+            </tr>
+            <tr>
+                <td><code>IsWithinBounds(Vector3i position)</code></td>
+                <td>True if a grid position is inside the project's world bounds.</td>
+            </tr>
+            <tr>
+                <td><code>RebuildMeshes()</code></td>
+                <td>Rebuilds every scene's chunk meshes right now.</td>
+            </tr>
+        </table>
+
+        <p>
+            The two setters are useful if you want to pre-select a tile or material
+            before the user paints. Most plugins leave them alone.
+        </p>
+
+        <div class="infobox">
+            <span class="label">Bounds are per-project</span>
+            The bounds <code>IsWithinBounds</code> checks against are the ones set in
+            the Project Settings tab (Min / Max). They are not the same as the visible
+            world border, though the world border draws them. Every block you place
+            through the Block service is checked against these bounds by the editor,
+            so if the user has set tight bounds you will get a lot of rejected
+            positions back. Check <code>IsWithinBounds</code> yourself if you want to
+            skip the rejections.
+        </div>
+
+        <h2 id="svc-selection">18. Selection service <a class="editlink" href="#svc-selection">[link]</a></h2>
+
+        <p>
+            Read and change the current block selection. Changes made here go on the
+            undo stack automatically.
+        </p>
+
+        <table class="wikitable">
+            <tr>
+                <th>Member</th>
+                <th>What it does</th>
+            </tr>
+            <tr>
+                <td><code>GetSelectedBlocks()</code></td>
+                <td>The current set of selected grid positions.</td>
+            </tr>
+            <tr>
+                <td><code>Select(IEnumerable&lt;Vector3i&gt; positions)</code></td>
+                <td>Replaces the current selection.</td>
+            </tr>
+            <tr>
+                <td><code>Clear()</code></td>
+                <td>Empties the selection.</td>
+            </tr>
+            <tr>
+                <td><code>SelectionChanged</code></td>
+                <td>Event. Fires whenever the selection changes.</td>
+            </tr>
+        </table>
+
+        <div class="infobox">
+            <span class="label">What counts as "selected"</span>
+            Selection is block-level. The editor's own Vertex/Edge/Face/Decal modes
+            have their own internal selection sets, which are not exposed through
+            this service. If you need to know which vertices are selected in Vertex
+            mode, you cannot get that from a plugin right now.
+        </div>
+
+        <h2 id="svc-undo">19. Undo service <a class="editlink" href="#svc-undo">[link]</a></h2>
+
+        <p>
+            Lets you wrap your own changes in a command so they show up in the undo
+            history like a normal editor action.
+        </p>
+
+        <table class="wikitable">
+            <tr>
+                <th>Member</th>
+                <th>What it does</th>
+            </tr>
+            <tr>
+                <td><code>Execute(IPluginCommand command)</code></td>
+                <td>Runs a command and pushes it onto the undo stack.</td>
+            </tr>
+            <tr>
+                <td><code>Undo()</code></td>
+                <td>Undoes the last command.</td>
+            </tr>
+            <tr>
+                <td><code>Redo()</code></td>
+                <td>Redoes the last undone command.</td>
+            </tr>
+        </table>
+
+        <p>
+            A custom command implements <code>IPluginCommand</code>. That interface
+            has three members: a description, an Execute method, and an Undo method.
+        </p>
+
+        <pre><code>internal class MoveMyThingCommand : IPluginCommand
+{
+    private readonly Vector3i _oldPos, _newPos;
+    private readonly IBlockService _blocks;
+
+    public MoveMyThingCommand(IBlockService blocks, Vector3i oldPos, Vector3i newPos)
+    {
+        _blocks = blocks;
+        _oldPos = oldPos;
+        _newPos = newPos;
+    }
+
+    public string Description =&gt; $"Move thing from {_oldPos} to {_newPos}";
+
+    public void Execute()
+    {
+        // Apply the change...
+    }
+
+    public void Undo()
+    {
+        // ...and reverse it.
+    }
+}</code></pre>
+
+        <div class="infobox tip">
+            <span class="label">Simpler alternative</span>
+            For most plugins you do not need a custom command at all. The Block and
+            Selection services already push undo entries for you. Only write a command
+            when you are doing something the editor does not already have a service
+            for.
+        </div>
+
+        <div class="infobox warn">
+            <span class="label">Execute is called twice</span>
+            The editor calls your command's <code>Execute</code> the first time it is
+            pushed, and again every time it is redone. Your implementation has to be
+            idempotent: re-running it should put the world in the same state, not
+            double the change. This is normal for undo commands, but it is easy to
+            miss if you cache a delta instead of the two end states.
+        </div>
+
+        <h2 id="svc-events">20. Event service <a class="editlink" href="#svc-events">[link]</a></h2>
+
+        <p>
+            Tells you when something changes in the project.
+        </p>
+
+        <table class="wikitable">
+            <tr>
+                <th>Event</th>
+                <th>Fires when</th>
+            </tr>
+            <tr>
+                <td><code>BlockPlaced</code></td>
+                <td>A block appears at a position. Carries <code>BlockChangedEventArgs</code>.</td>
+            </tr>
+            <tr>
+                <td><code>BlockRemoved</code></td>
+                <td>A block is gone from a position. Carries <code>BlockChangedEventArgs</code>.</td>
+            </tr>
+            <tr>
+                <td><code>ActiveSceneChanged</code></td>
+                <td>The user switched to a different layer. Carries <code>ActiveSceneChangedEventArgs</code>.</td>
+            </tr>
+        </table>
+
+        <p>
+            The BlockPlaced and BlockRemoved arguments both carry a scene name and a
+            grid position. If you need the block itself, call
+            <code>Blocks.GetBlock(pos)</code> inside the handler.
+        </p>
+
+        <div class="infobox">
+            <span class="label">Cleanup</span>
+            You do not have to unsubscribe from these. The context tracks them for
+            you. But if you subscribe to anything else, remember to unsubscribe in
+            <code>Shutdown</code>.
+        </div>
+
+        <div class="infobox warn">
+            <span class="label">These fire per block</span>
+            A batch of ten thousand block placements will fire ten thousand
+            BlockPlaced events. If your handler does something expensive per call,
+            it will make batch operations slow. Keep the handler cheap, or only
+            attach it when you actually need it.
+        </div>
+
+        <h2 id="svc-render">21. Render service <a class="editlink" href="#svc-render">[link]</a></h2>
+
+        <p>
+            Add your own drawing pass to the pipeline. It runs once per frame. Use it
+            for things that need real depth testing against the scene, like your own
+            3D geometry.
+        </p>
+
+        <table class="wikitable">
+            <tr>
+                <th>Method</th>
+                <th>What it does</th>
+            </tr>
+            <tr>
+                <td><code>AddRenderPass(IPluginRenderPass pass)</code></td>
+                <td>Adds a pass to the pipeline.</td>
+            </tr>
+            <tr>
+                <td><code>RemoveRenderPass(IPluginRenderPass pass)</code></td>
+                <td>Removes a pass you added earlier. Returns true if it was found.</td>
+            </tr>
+        </table>
+
+        <p>
+            A pass implements <code>IPluginRenderPass</code>. It has two methods:
+            <code>Update(float deltaTime)</code> and
+            <code>Render(IPluginRenderContext context)</code>. The context carries the
+            current view and projection matrices plus the screen size.
+        </p>
+
+        <p>
+            Since this is real OpenGL work, it is fine to write raw GL calls. Just be
+            polite: save the state you change and restore it afterward.
+        </p>
+
+        <div class="infobox">
+            <span class="label">Overlays vs passes</span>
+            Overlays and render passes are two different hooks into the same idea. If
+            you want to draw lines and small shapes on top of the scene, use an
+            overlay renderer (section 23): it is already wired to the right stage
+            and its state is managed for you. If you need a full drawing pass with
+            your own shaders, depth buffer settings and geometry, use a render pass.
+        </div>
+
+        <h2 id="svc-lighting">22. Lighting service <a class="editlink" href="#svc-lighting">[link]</a></h2>
+
+        <p>
+            Hooks into the lighting step of the render pipeline. Use it to read or
+            change the ambient light, sun direction, sun color, and so on.
+        </p>
+
+        <table class="wikitable">
+            <tr>
+                <th>Event</th>
+                <th>Fires</th>
+            </tr>
+            <tr>
+                <td><code>BeforeLightingSetup</code></td>
+                <td>Right before the editor packs lighting data for the frame. Carries a <code>LightingContext</code>.</td>
+            </tr>
+            <tr>
+                <td><code>AfterLightingSetup</code></td>
+                <td>Right after that step finishes. Carries a <code>LightingContext</code>.</td>
+            </tr>
+            <tr>
+                <td><code>BeforeSceneRender</code></td>
+                <td>Right before the scene is drawn. Carries a <code>LightingContext</code>.</td>
+            </tr>
+            <tr>
+                <td><code>AfterSceneRender</code></td>
+                <td>Right after the scene is drawn. Carries a <code>LightingContext</code>.</td>
+            </tr>
+        </table>
+
+        <p>
+            The service also exposes <code>Current</code>, which returns the lighting
+            context used by the most recent frame.
+        </p>
+
+        <div class="infobox warn">
+            <span class="label">Timing matters</span>
+            Only change lighting values inside <code>BeforeLightingSetup</code>. If you
+            change them anywhere else, the change may be ignored because the data has
+            already been sent to the GPU.
+        </div>
+
+        <h3>What the LightingContext contains</h3>
+
+        <p>
+            The <code>LightingContext</code> is a snapshot of every lighting value
+            the pipeline is about to use this frame. It includes the ambient light,
+            the sun's direction, color and enabled flag, the sun's shadow map and
+            its view-projection matrix, plus every extra light with its position,
+            color, intensity, range, type, direction and cone angles. See
+            <a href="#types">Types</a> for the full field list.
+        </p>
+
+        <p>
+            A plugin can override any of these values inside
+            <code>BeforeLightingSetup</code>. Because the context is rebuilt from
+            the project every frame, changes do not stick; if you want a permanent
+            change, you have to make it every frame. That is also the reason the
+            context is safe to mutate: nothing downstream holds a reference to it
+            across frames.
+        </p>
+
+        <h2 id="svc-overlay">23. Overlay service <a class="editlink" href="#svc-overlay">[link]</a></h2>
+
+        <p>
+            Overlays are helper graphics drawn on top of the scene. Lines, icons, a
+            little preview shape, a bounding box around a selected object. None of it
+            ends up in exports.
+        </p>
+
+        <table class="wikitable">
+            <tr>
+                <th>Method</th>
+                <th>What it does</th>
+            </tr>
+            <tr>
+                <td><code>AddOverlayRenderer(IPluginOverlayRenderer r)</code></td>
+                <td>Adds a renderer to the end of the overlay stack.</td>
+            </tr>
+            <tr>
+                <td><code>InsertOverlayRenderer(int index, IPluginOverlayRenderer r)</code></td>
+                <td>Adds a renderer at a specific position in the stack.</td>
+            </tr>
+            <tr>
+                <td><code>RemoveOverlayRenderer(IPluginOverlayRenderer r)</code></td>
+                <td>Removes a renderer you added. Returns true if it was found.</td>
+            </tr>
+            <tr>
+                <td><code>ReplaceOverlayRenderer&lt;T&gt;(IPluginOverlayRenderer r)</code></td>
+                <td>Swaps out another plugin's renderer of type <code>T</code> with your own. See the note below.</td>
+            </tr>
+        </table>
+
+        <div class="infobox warn">
+            <span class="label">ReplaceOverlayRenderer only sees plugin renderers</span>
+            Despite the name, this method cannot replace the editor's built-in
+            overlay renderers (the grid, the outline renderer, the selection
+            renderer, and so on). Internally, only renderers that were themselves
+            added by a plugin are eligible to be swapped. Passing a built-in
+            renderer's type as <code>T</code> simply finds nothing and the call is a
+            no-op. If you need to change how a built-in renderer behaves, you cannot
+            do it from a plugin right now.
+        </div>
+
+        <p>
+            The service also exposes four events you can subscribe to, if you want to
+            run code before or after the whole overlay pass, or before or after a
+            single renderer.
+        </p>
+
+        <table class="wikitable">
+            <tr>
+                <th>Event</th>
+                <th>Fires</th>
+            </tr>
+            <tr>
+                <td><code>BeforeRender</code></td>
+                <td>Before the whole overlay pass.</td>
+            </tr>
+            <tr>
+                <td><code>AfterRender</code></td>
+                <td>After the whole overlay pass.</td>
+            </tr>
+            <tr>
+                <td><code>BeforeRenderer</code></td>
+                <td>Before each individual renderer.</td>
+            </tr>
+            <tr>
+                <td><code>AfterRenderer</code></td>
+                <td>After each individual renderer.</td>
+            </tr>
+        </table>
+
+        <p>
+            Your renderer implements <code>IPluginOverlayRenderer</code>. It just has
+            an <code>Enabled</code> flag and a <code>Render(context)</code> method.
+            Drawing happens with raw OpenGL, so save and restore any state you touch.
+        </p>
+
+        <pre><code>internal class MyOverlay : IPluginOverlayRenderer
+{
+    public bool Enabled { get; set; } = true;
+
+    public void Render(IPluginOverlayContext ctx)
+    {
+        // ctx.ScreenSize, ctx.View, ctx.Projection are all you need.
+        // Draw lines, points or triangles with whatever GL calls you like.
+    }
+}
+
+// And in Initialize:
+_ctx.Overlays.AddOverlayRenderer(new MyOverlay());</code></pre>
+
+        <h2 id="svc-ui">24. Interface service <a class="editlink" href="#svc-ui">[link]</a></h2>
+
+        <p>
+            Adds menu items and windows.
+        </p>
+
+        <table class="wikitable">
+            <tr>
+                <th>Method</th>
+                <th>What it does</th>
+            </tr>
+            <tr>
+                <td><code>AddMenuBarItem(string label, Action action)</code></td>
+                <td>Adds an item under the Plugins menu.</td>
+            </tr>
+            <tr>
+                <td><code>AddWindow(string title, Action drawContent, bool? open = null)</code></td>
+                <td>Registers a dockable window. Pass <code>true</code> for open to open it immediately.</td>
+            </tr>
+            <tr>
+                <td><code>RemoveWindow(string title)</code></td>
+                <td>Removes a window you added earlier. Returns true if it was found.</td>
+            </tr>
+        </table>
+
+        <p>
+            A window's draw action runs every frame while the window is open, inside
+            an ImGui Begin/End pair. You can use ImGui calls directly there.
+        </p>
+
+        <pre><code>_ctx.UI.AddWindow("My Panel", () =&gt;
+{
+    ImGui.Text("Hello from a plugin window.");
+    if (ImGui.Button("Do a thing"))
+        _ctx.Log.Info("You did the thing.");
+}, open: true);</code></pre>
+
+        <div class="infobox">
+            <span class="label">Keep it fast</span>
+            Your draw action runs on every frame. If it is slow, the entire editor
+            gets slow. Cache things, avoid allocations, and do not do file I/O from
+            inside a draw.
+        </div>
+
+        <div class="infobox warn">
+            <span class="label">Title is unique</span>
+            Window titles must be unique across every plugin and the editor itself.
+            If you try to register a window with a title that is already in use, the
+            call is rejected with an error. Pick a name that is unlikely to collide.
+        </div>
+
+        <h2 id="svc-input">25. Input service <a class="editlink" href="#svc-input">[link]</a></h2>
+
+        <p>
+            Read the keyboard, mouse, and your registered actions.
+        </p>
+
+        <table class="wikitable">
+            <tr>
+                <th>Member</th>
+                <th>What it does</th>
+            </tr>
+            <tr>
+                <td><code>IsActionPressed(string action)</code></td>
+                <td>True on the frame the shortcut went down.</td>
+            </tr>
+            <tr>
+                <td><code>IsActionHeld(string action)</code></td>
+                <td>True on every frame the shortcut is down.</td>
+            </tr>
+            <tr>
+                <td><code>IsActionReleased(string action)</code></td>
+                <td>True on the frame the shortcut came back up.</td>
+            </tr>
+            <tr>
+                <td><code>RegisterAction(string action, string category, KeyBinding defaultBinding)</code></td>
+                <td>Defines a new rebindable action. Returns the action name.</td>
+            </tr>
+            <tr>
+                <td><code>GetShortcutText(string action)</code></td>
+                <td>Human readable form of the current binding.</td>
+            </tr>
+            <tr>
+                <td><code>GetBinding(string action)</code></td>
+                <td>Raw binding data for an action.</td>
+            </tr>
+            <tr>
+                <td><code>GetAllActions()</code></td>
+                <td>Every currently known action and its binding.</td>
+            </tr>
+            <tr>
+                <td><code>GetActionsInCategory(string category)</code></td>
+                <td>Action names in one category.</td>
+            </tr>
+            <tr>
+                <td><code>GetCategories()</code></td>
+                <td>Every known category name.</td>
+            </tr>
+            <tr>
+                <td><code>ActionPressed</code></td>
+                <td>Event. Fires when any action transitions from up to down. Carries the action name.</td>
+            </tr>
+            <tr>
+                <td><code>ActionReleased</code></td>
+                <td>Event. Fires when any action transitions from down to up. Carries the action name.</td>
+            </tr>
+            <tr>
+                <td><code>IsKeyPressed(Keys key)</code></td>
+                <td>Raw key check, bypassing the action system.</td>
+            </tr>
+            <tr>
+                <td><code>IsKeyHeld(Keys key)</code></td>
+                <td>Raw key held check.</td>
+            </tr>
+            <tr>
+                <td><code>IsKeyReleased(Keys key)</code></td>
+                <td>Raw key released check.</td>
+            </tr>
+            <tr>
+                <td><code>IsMouseButtonPressed(MouseButton b)</code></td>
+                <td>Raw mouse button check.</td>
+            </tr>
+            <tr>
+                <td><code>IsMouseButtonHeld(MouseButton b)</code></td>
+                <td>Raw mouse button held check.</td>
+            </tr>
+            <tr>
+                <td><code>IsMouseButtonReleased(MouseButton b)</code></td>
+                <td>Raw mouse button released check.</td>
+            </tr>
+            <tr>
+                <td><code>MousePosition</code></td>
+                <td>Current cursor position in window pixels.</td>
+            </tr>
+            <tr>
+                <td><code>MouseDelta</code></td>
+                <td>How far the mouse moved since last frame.</td>
+            </tr>
+            <tr>
+                <td><code>ScrollDelta</code></td>
+                <td>Scroll wheel movement this frame.</td>
+            </tr>
+            <tr>
+                <td><code>CurrentModifiers</code></td>
+                <td>Which modifier keys are down right now.</td>
+            </tr>
+        </table>
+
+        <p>
+            Actions are better than raw keys whenever possible. It costs you nothing
+            and users can rebind them.
+        </p>
+
+        <div class="infobox tip">
+            <span class="label">Text fields are respected</span>
+            The raw key checks (<code>IsKeyPressed</code> and friends) already
+            suppress input while the user is typing in a text field. You do not have
+            to check for that yourself. The same is true of the action checks.
+        </div>
+
+        <h2 id="svc-log">26. Log service <a class="editlink" href="#svc-log">[link]</a></h2>
+
+        <p>
+            Prints a message to the on-screen toast and to the console window.
+        </p>
+
+        <table class="wikitable">
+            <tr>
+                <th>Method</th>
+                <th>What it does</th>
+            </tr>
+            <tr><td><code>Info(string message)</code></td><td>Normal message. White text.</td></tr>
+            <tr><td><code>Warning(string message)</code></td><td>Yellow text.</td></tr>
+            <tr><td><code>Error(string message)</code></td><td>Red text. Also shows an error toast.</td></tr>
+            <tr><td><code>Debug(string message)</code></td><td>Cyan text. Suppressed by default in the toast list, but always appears in the console.</td></tr>
+        </table>
+
+        <p>
+            Messages get tagged with the category they came from. The user can turn
+            off toasts per category in Settings under Notifications. Errors are the
+            one category you should be careful with; every plugin uses them, so too
+            many will annoy people.
+        </p>
+
+        <div class="infobox">
+            <span class="label">Two surfaces</span>
+            Every log call goes to two places: the toast list in the corner of the
+            screen, and the Console window (openable from the Settings menu). The
+            user's notification settings only affect the toast side. The console
+            always receives everything. If you need to debug a plugin and the toasts
+            are being suppressed, open the Console.
+        </div>
+
+        <h2 id="svc-importexport">27. Import and export <a class="editlink" href="#svc-importexport">[link]</a></h2>
+
+        <p>
+            Adds items to the File &gt; Import and File &gt; Export menus.
+        </p>
+
+        <table class="wikitable">
+            <tr>
+                <th>Method</th>
+                <th>What it does</th>
+            </tr>
+            <tr>
+                <td><code>RegisterImporter(IImporter importer)</code></td>
+                <td>Adds a new entry under File &gt; Import.</td>
+            </tr>
+            <tr>
+                <td><code>RegisterExporter(IExporter exporter)</code></td>
+                <td>Adds a new entry under File &gt; Export as.</td>
+            </tr>
+        </table>
+
+        <p>
+            An importer implements <code>IImporter</code>. That interface has a
+            display name, a list of file extensions, and an <code>Import</code>
+            method. When the user picks your importer from the menu, the editor opens
+            a file dialog filtered to your extensions, then hands you the chosen file
+            along with an <code>IImportContext</code>.
+        </p>
+
+        <p>
+            An exporter implements <code>IExporter</code>, which works the same way
+            but hands you the current scene contents in an
+            <code>IExportContext</code>.
+        </p>
+
+        <div class="infobox tip">
+            <span class="label">Multi-extension formats</span>
+            If your importer accepts more than one extension (say .obj and .fbx), just
+            list them all. The editor builds the file dialog filter for you.
+        </div>
+
+        <div class="infobox warn">
+            <span class="label">Export context is a snapshot</span>
+            The export context hands you an <code>ExportScene</code> list that was
+            captured at the moment the export started. Do not assume the underlying
+            scene will stay still while you work; do not hold onto the snapshot past
+            the end of the call either.
+        </div>
+
+        <h2 id="svc-assets">28. Assets and file dialogs <a class="editlink" href="#svc-assets">[link]</a></h2>
+
+        <p>
+            Small helper for finding files and asking the user to pick one.
+        </p>
+
+        <table class="wikitable">
+            <tr>
+                <th>Member</th>
+                <th>What it does</th>
+            </tr>
+            <tr>
+                <td><code>GetAssetPath(string relativePath)</code></td>
+                <td>Absolute path inside the editor's Assets folder. Creates missing folders.</td>
+            </tr>
+            <tr>
+                <td><code>GetMaterialsFolder()</code></td>
+                <td>Absolute path to the project's Materials folder.</td>
+            </tr>
+            <tr>
+                <td><code>OpenFileDialog(string filter, Action&lt;string?&gt; onResult)</code></td>
+                <td>Shows the OS file picker. The callback receives the chosen path, or null if the user cancelled.</td>
+            </tr>
+        </table>
+
+        <p>
+            The filter string follows the standard pattern:
+            <code>Description (*.ext)|*.ext</code>. Multiple extensions go in one
+            entry, separated by semicolons:
+            <code>Models (*.obj;*.fbx)|*.obj;*.fbx</code>.
+        </p>
+
+        <div class="infobox">
+            <span class="label">Callback is on the main thread</span>
+            Even though the file dialog itself runs on a background thread (because
+            that is how the OS file picker works), the callback is marshalled back
+            to the main thread before it fires. You can safely touch the context
+            from inside it.
+        </div>
+
+        <h2 id="practices">29. Best practices <a class="editlink" href="#practices">[link]</a></h2>
+
+        <ul>
+            <li>Register everything through the context. Windows, menu items, render passes, overlay renderers, importers, event handlers. The context knows how to undo all of it.</li>
+            <li>Pick names that read well. Window titles, action names, and menu labels all show up in the UI.</li>
+            <li>Use the Block and Layer services for scene changes instead of poking at data directly. You get correct undo behavior for free.</li>
+            <li>Keep per-frame code fast. Draw callbacks and overlay renderers run every single frame.</li>
+            <li>Do not hold references to another plugin. Plugins load, unload, and reload independently and it is not your job to track them.</li>
+            <li>Test the Reload and Remove buttons in Settings before you publish. If your plugin does not survive a reload, it will not survive an update.</li>
+            <li>Decode files on a background thread, but do anything that touches OpenGL on the main thread. There is no exception to this.</li>
+            <li>Prefer actions over raw key checks. It costs nothing and users can rebind them.</li>
+            <li>Call <code>RebuildMeshes</code> once at the end of a batch, not once per layer.</li>
+            <li>Log a Debug message when your plugin initializes and shuts down. It makes diagnosing load/unload issues much easier.</li>
+        </ul>
+
+        <h2 id="limits">30. What you can't do <a class="editlink" href="#limits">[link]</a></h2>
+
+        <p>
+            The plugin API is deliberately narrow. Anything not listed in
+            <a href="#interfaces">the interface reference</a> is internal to the
+            editor and can change or disappear without notice. The table below covers
+            the things people ask for most often that the API deliberately does not
+            do, and the closest thing you can get to each of them with the tools you
+            actually have.
+        </p>
+
+        <h3>Things a plugin cannot do</h3>
+
+        <table class="wikitable">
+            <tr>
+                <th>Wish</th>
+                <th>Reality</th>
+                <th>Closest workaround</th>
+            </tr>
+            <tr>
+                <td>Add a new edit mode.</td>
+                <td>The edit mode list is fixed and every mode is wired into the ToolSystem. There is no registration hook for new modes.</td>
+                <td>Draw an overlay (<a href="#svc-overlay">section 23</a>) that reads input and draws your own helper graphics, and put the controls in a plugin window (<a href="#svc-ui">section 24</a>). Most "new mode" ideas are really "draw something on top of the viewport", and that is exactly what overlays are for.</td>
+            </tr>
+            <tr>
+                <td>Replace a built-in overlay renderer.</td>
+                <td><code>ReplaceOverlayRenderer&lt;T&gt;</code> only sees renderers that were added by a plugin. The built-ins (grid, outline, selection, vertices, faces, gizmo, world border, snap grid, preview rectangle, preview block, light icons, camera icons, camera frustums) are not eligible.</td>
+                <td>Add your own overlay on top of theirs. Draw over what they drew. There is no way to suppress a built-in overlay from a plugin.</td>
+            </tr>
+            <tr>
+                <td>Add a toolbar button.</td>
+                <td>Toolbars are editor-owned. There is no registration hook.</td>
+                <td>Use <code>UI.AddMenuBarItem</code> for a quick toggle, or <code>UI.AddWindow</code> for a full control panel. Both are reachable from the same menu the user already uses.</td>
+            </tr>
+            <tr>
+                <td>Add a new light or camera layer.</td>
+                <td>The Light and Camera entities are not exposed on the plugin API at all. You cannot create one, edit one, or delete one from a plugin.</td>
+                <td>None currently. Light and camera layer creation is a UI-only feature.</td>
+            </tr>
+            <tr>
+                <td>Read which vertices / edges / faces are selected in Vertex / Edge / Face edit mode.</td>
+                <td>Those selections are stored on the internal edit systems and are not exposed through the context.</td>
+                <td>The block-level selection (<code>Selection.GetSelectedBlocks</code>) is the only selection you can read. If you need face or vertex selection, you cannot get it right now.</td>
+            </tr>
+            <tr>
+                <td>Modify a decal overlay on a face.</td>
+                <td>Decals are stored on the scene with their own internal key structure and there is no plugin-side accessor for them.</td>
+                <td>Paint a decal is a UI-only operation. From a plugin, a face's base texture is all you can change (via <code>BlockData.SetFace</code>).</td>
+            </tr>
+            <tr>
+                <td>Rotate or flip a face's UV.</td>
+                <td><code>BlockData</code> exposes the tile and material per face, but not the per-face UV rotation or flip flags.</td>
+                <td>None currently. If you want a rotated UV, you cannot set it from a plugin.</td>
+            </tr>
+            <tr>
+                <td>Add a new material type or shader.</td>
+                <td>Materials and shaders are owned by the editor. Plugins cannot register new shader handlers, new material pipelines, or new lighting models.</td>
+                <td>Draw a custom render pass (<a href="#svc-render">section 21</a>) with your own GLSL. That is a full render pass, not a material, but it is the closest you get.</td>
+            </tr>
+            <tr>
+                <td>Hook into project save or load.</td>
+                <td>There is no "before save" or "after load" event on the API. Projects are serialized by internal code that plugins cannot see.</td>
+                <td>If your plugin needs to persist its own data, put it in a file next to your .dll or in the user's config folder, and read/write it from your plugin's own Initialize and Shutdown.</td>
+            </tr>
+            <tr>
+                <td>Modify the layer tree structure.</td>
+                <td><code>ILayerService</code> can add a top-level layer, but it cannot create folders, reparent layers, or rename existing layers.</td>
+                <td>None currently. Layer tree manipulation is a UI-only feature.</td>
+            </tr>
+            <tr>
+                <td>Modify user settings programmatically.</td>
+                <td>The settings file is not exposed on the plugin API.</td>
+                <td>Keep plugin-specific settings in your own file. Read it in <code>Initialize</code>, write it in <code>Shutdown</code>.</td>
+            </tr>
+            <tr>
+                <td>Add new keyboard modifiers.</td>
+                <td>The modifier set is fixed: Ctrl, Shift, Alt. Plugins cannot introduce new ones.</td>
+                <td>Combine existing modifiers. Ctrl+Shift+Alt is a valid chord.</td>
+            </tr>
+            <tr>
+                <td>Change the title bar, menu bar, or docked layout programmatically.</td>
+                <td>None of these are exposed.</td>
+                <td>Windows you register with <code>UI.AddWindow</code> are real ImGui windows, so the user can dock them anywhere. That is the extent of what a plugin can do to the UI layout.</td>
+            </tr>
+            <tr>
+                <td>Register a new asset type (a new kind of texture, sound, model, ...).</td>
+                <td>The asset system is fixed. Importers can bring new file formats in, but they must produce blocks and materials, not a new asset category.</td>
+                <td>Register an importer (<a href="#svc-importexport">section 27</a>) that reads your format and produces a layer with blocks.</td>
+            </tr>
+            <tr>
+                <td>Change what a built-in keyboard shortcut does.</td>
+                <td>Built-in actions (Undo, Save, SwitchBlock, ...) are registered by the editor before plugins load, and plugins cannot overwrite them.</td>
+                <td>Register a brand-new action name. Do not try to reuse a built-in one.</td>
+            </tr>
+            <tr>
+                <td>Read or write project settings like the sun direction, world bounds, or render distance directly.</td>
+                <td>Those are internal. The Lighting service lets you <em>override</em> some of them per-frame for the render pipeline, but the values stored in the project are not exposed.</td>
+                <td>Read them from <code>Lighting.Current</code> during a lighting event, override them there. Do not try to store a persistent change.</td>
+            </tr>
+        </table>
+
+        <h3>Things a plugin can do, but only within certain limits</h3>
+
+        <table class="wikitable">
+            <tr>
+                <th>Thing</th>
+                <th>Limit</th>
+            </tr>
+            <tr>
+                <td>Place blocks.</td>
+                <td>Each call goes on the undo stack. Batch operations should use <code>Layers.AddLayer</code> instead, which skips the stack.</td>
+            </tr>
+            <tr>
+                <td>Add a window.</td>
+                <td>The title must be unique. The draw callback runs every frame while the window is open, and you cannot prevent the user from closing it.</td>
+            </tr>
+            <tr>
+                <td>Add a render pass.</td>
+                <td>It runs after the overlay pass and before ImGui. There is no insertion-point argument on the API.</td>
+            </tr>
+            <tr>
+                <td>Add an overlay renderer.</td>
+                <td>You can choose its position in the stack, but you cannot stop the editor from drawing its own overlays before or after yours.</td>
+            </tr>
+            <tr>
+                <td>Register an action.</td>
+                <td>The action name must be unique. If the user has already bound that name to something else (extremely unlikely with a namespaced name) the user's binding wins.</td>
+            </tr>
+            <tr>
+                <td>Import a file.</td>
+                <td>The user has to pick your importer from File &gt; Import. There is no way to auto-detect a file type on drag-and-drop.</td>
+            </tr>
+            <tr>
+                <td>Override lighting for one frame.</td>
+                <td>Only inside <code>BeforeLightingSetup</code>. Every other event fires too late for the change to reach the shader.</td>
+            </tr>
+        </table>
+
+        <h3>Things that are simply just unsafe</h3>
+
+        <ul>
+            <li>
+                <strong>Touching OpenGL from a background thread.</strong> The GL
+                context is bound to the main thread. Any GL call from a worker
+                thread will either do nothing or crash the process. Decode image
+                data on a worker, upload on the main thread. (I have fallen victim to this)
+            </li>
+            <li>
+                <strong>Holding a reference to an editor object past
+                    <code>Shutdown</code>.</strong> The editor may unload your plugin
+                while your reference is still alive, which prevents the .dll from
+                being released. Static fields holding editor objects are the main
+                source of "my plugin won't unload" bugs.
+            </li>
+            <li>
+                <strong>Blocking the main thread inside a draw callback.</strong>
+                File I/O, network access, long loops, and <code>Thread.Sleep</code>
+                all freeze the editor when called from a per-frame callback. Move
+                the work off the callback.
+            </li>
+            <li>
+                <strong>Assuming a scene exists.</strong> A project can have zero
+                scenes, or the active scene can be null. Check before using
+                <code>Blocks</code> or <code>Selection</code>.
+            </li>
+            <li>
+                <strong>Assuming your window is open.</strong> The user can close it
+                at any time. Guard your draw callback, or it will simply stop being
+                called with no warning.
+            </li>
+            <li>
+                <strong>Assuming a specific UI scale.</strong> Every screen size and
+                scale factor is user-configurable. Use
+                <code>ImGui.GetFontSize</code> and the current style, not hardcoded
+                pixel sizes.
+            </li>
+        </ul>
+
+        <div class="infobox">
+            <span class="label">If you need something on this list</span>
+            The plugin API is intentionally small. If there is something on this
+            page you need and cannot get, the right move is to ask on the Chunk Junk
+            Discord. Feature requests from plugin authors are how the API grows.
+        </div>
+
+        <h2 id="trouble">31. Troubleshooting <a class="editlink" href="#trouble">[link]</a></h2>
+
+        <table class="wikitable">
+            <tr>
+                <th>Problem</th>
+                <th>Likely cause</th>
+            </tr>
+            <tr>
+                <td>My plugin does not show up in the Plugins tab.</td>
+                <td>The .dll is not in the Plugins folder, or the class does not implement <code>IPlugin</code>, or the class is abstract.</td>
+            </tr>
+            <tr>
+                <td>My plugin will not unload.</td>
+                <td>Something outside the plugin still holds a reference. Check for subscriptions you made outside the context, or static fields holding editor objects.</td>
+            </tr>
+            <tr>
+                <td>A menu item is still there after I disabled the plugin.</td>
+                <td>You added it somewhere other than <code>UI.AddMenuBarItem</code>.</td>
+            </tr>
+            <tr>
+                <td>A shortcut does nothing.</td>
+                <td>Another action already uses that key combination. Open Settings, then Controls, and look for a red conflict marker.</td>
+            </tr>
+            <tr>
+                <td>The editor crashed right after my plugin ran.</td>
+                <td>You called something that touches OpenGL from a background thread. Only the main thread can talk to the GPU.</td>
+            </tr>
+            <tr>
+                <td>My importer's file dialog throws a filter error.</td>
+                <td>Your filter string does not follow <code>Description|pattern</code>. Use pipes to separate description from pattern and to separate entries. Use semicolons to separate multiple patterns inside one entry.</td>
+            </tr>
+            <tr>
+                <td>My window keeps disappearing.</td>
+                <td>The window is being drawn inside the editor's main docking layout. If you gave it the same title as a built-in window, one of them is silently winning.</td>
+            </tr>
+            <tr>
+                <td>My overlay renderer draws nothing.</td>
+                <td>Overlays draw into the same GL state as the editor. If you changed the depth function, the blend function, or the current program and did not restore it, later draws may be broken. Save and restore every GL state you change.</td>
+            </tr>
+            <tr>
+                <td>My render pass draws on top of the UI.</td>
+                <td>Render passes run before ImGui. The editor UI is drawn after every plugin pass, so a pass cannot overdraw the UI.</td>
+            </tr>
+            <tr>
+                <td>Themes or styles I set from a plugin do not stick.</td>
+                <td>Themes and styles are not part of the plugin API. If you need this, you cannot do it from a plugin.</td>
+            </tr>
+            <tr>
+                <td>Plugin loads but does not appear in the Settings list.</td>
+                <td>You renamed the plugin. The name you return from <code>Name</code> is the identity used for the saved enabled state, so a rename looks like a fresh plugin.</td>
+            </tr>
+        </table>
+
+        <h2 id="glossary">32. Glossary <a class="editlink" href="#glossary">[link]</a></h2>
+
+        <table class="wikitable">
+            <tr>
+                <th>Term</th>
+                <th>Meaning</th>
+            </tr>
+            <tr>
+                <td>Action</td>
+                <td>A named, rebindable keyboard or mouse shortcut. The user can change it from Settings.</td>
+            </tr>
+            <tr>
+                <td>Block</td>
+                <td>One cube unit of geometry inside a scene.</td>
+            </tr>
+            <tr>
+                <td>BlockData</td>
+                <td>The plugin-facing DTO for a block. Carries face tiles, face materials, and optional editable-block metadata.</td>
+            </tr>
+            <tr>
+                <td>Chunk</td>
+                <td>A fixed-size group of blocks, 16 on a side, used to speed up mesh building.</td>
+            </tr>
+            <tr>
+                <td>Editable block</td>
+                <td>A block whose eight corners have been moved, giving it a custom shape.</td>
+            </tr>
+            <tr>
+                <td>Edit mode</td>
+                <td>The current kind of editing. Block, Vertex, Edge, Face, Paint, Decal, Select, Light, Camera, Sculpt.</td>
+            </tr>
+            <tr>
+                <td>Layer</td>
+                <td>Another word for a scene. Projects can have many layers.</td>
+            </tr>
+            <tr>
+                <td>Overlay</td>
+                <td>Helper graphics drawn on top of the 3D scene. Never ends up in exports.</td>
+            </tr>
+            <tr>
+                <td>Plugin</td>
+                <td>A separate .dll that adds features to Chunk Junk.</td>
+            </tr>
+            <tr>
+                <td>Plugin context</td>
+                <td>The object your plugin receives in <code>Initialize</code>. The only path to the editor.</td>
+            </tr>
+            <tr>
+                <td>Render pass</td>
+                <td>One drawing step inside the render pipeline.</td>
+            </tr>
+            <tr>
+                <td>Scene</td>
+                <td>One layer of the project. Holds a grid of blocks.</td>
+            </tr>
+            <tr>
+                <td>Service</td>
+                <td>A grouped set of related features on the plugin context. Blocks, Layers, Materials, and so on.</td>
+            </tr>
+            <tr>
+                <td>Snapshot</td>
+                <td>A read-only copy of data taken at a specific moment, e.g. the scene data passed to an exporter.</td>
+            </tr>
+            <tr>
+                <td>Tile</td>
+                <td>One cell in a material's texture atlas. A block face references a tile plus a material.</td>
+            </tr>
+            <tr>
+                <td>Undo stack</td>
+                <td>The history of commands the user can step back through with Ctrl+Z.</td>
+            </tr>
+        </table>
+
+        <h2 id="types">33. Full type reference <a class="editlink" href="#types">[link]</a></h2>
+
+        <p>
+            This section lists every type the plugin API exposes. These are the types
+            you pass around, store, and compare. Unless noted otherwise, every type
+            lives in the <code>ChunkJunk.Plugins.Api</code> namespace.
+        </p>
+
+        <div class="infobox warn">
+            <span class="label">One namespace exception</span>
+            <code>BlockFace</code> is the one type in this section that is not in
+            <code>ChunkJunk.Plugins.Api</code>. It lives in
+            <code>ChunkJunk.Codebase.Meshing.Data</code>, the same place the editor
+            uses it internally. To use <code>BlockFace</code> from a plugin you need
+            both <code>using ChunkJunk.Plugins.Api;</code> and
+            <code>using ChunkJunk.Codebase.Meshing.Data;</code>. This is not going to
+            change; if you only import one, the compiler will tell you the other one
+            is missing.
+        </div>
+
+        <h3>BlockFace</h3>
+
+        <p>
+            Which face of a block you are talking about. The order matters only if
+            you are doing bit tricks with <code>UVModeFlags</code> or
+            <code>TriangulationFlags</code>, where bit N corresponds to face N.
+        </p>
+
+        <pre><code>public enum BlockFace
+{
+    Back = 0,   // -Z
+    Front = 1,  // +Z
+    Left = 2,   // -X
+    Right = 3,  // +X
+    Bottom = 4, // -Y
+    Top = 5,    // +Y
+}</code></pre>
+
+        <h3>BlockData</h3>
+
+        <p>
+            Describes one block's appearance and (optionally) its shape. Created with
+            the static <code>Uniform</code> helper, then modified if needed.
+        </p>
+
+        <pre><code>public sealed class BlockData
+{
+    // Optional editable-block data. Leave all three at their defaults for a
+    // plain cube.
+
+    public Vector3[]? Vertices { get; set; }
+    public byte TriangulationFlags { get; set; }
+    public byte UVModeFlags { get; set; }
+
+    // Per-face accessors.
+
+    public Vector2i GetTile(BlockFace face);
+    public Guid     GetMaterial(BlockFace face);
+    public void     SetFace(BlockFace face, Vector2i tile, Guid materialId);
+
+    // Factory.
+
+    public static BlockData Uniform(Vector2i tile, Guid materialId);
+}</code></pre>
+
+        <div class="infobox">
+            <span class="label">Vertices layout</span>
+            When you set <code>Vertices</code>, it must have exactly 8 entries. The
+            index of each entry matches the corner's (x, y, z) bit flags: index i has
+            offset <code>((i &amp; 1), ((i &gt;&gt; 1) &amp; 1), ((i &gt;&gt; 2) &amp; 1))</code>.
+            In other words, index 0 is (0,0,0), index 1 is (1,0,0), index 2 is
+            (0,1,0), index 3 is (1,1,0), and so on.
+        </div>
+
+        <div class="infobox warn">
+            <span class="label">Not exposed: UV transforms, fixed-UV axes, decals</span>
+            <code>BlockData</code> deliberately does not carry per-face UV rotation
+            or flip, per-face fixed-UV axes, or decal overlays. Those are internal-only
+            features. If you need any of them, you cannot get them from a plugin.
+        </div>
+
+        <h3>KeyBinding</h3>
+
+        <p>
+            A keyboard or mouse shortcut. You can only construct one from a modifier
+            set plus either a key or a mouse button. An empty binding means "not
+            assigned".
+        </p>
+
+        <pre><code>public struct KeyBinding
+{
+    public ModifierKeys Modifiers { get; set; }
+    public Keys Key { get; set; }
+    public MouseButton? Button { get; set; }
+
+    public KeyBinding(ModifierKeys modifiers, Keys key);
+    public KeyBinding(ModifierKeys modifiers, MouseButton button);
+
+    public bool IsMouseBinding { get; }
+    public bool IsEmpty { get; }
+}</code></pre>
+
+        <h3>ModifierKeys</h3>
+
+        <p>
+            Which modifier keys are being held. It is a flags enum, so you combine
+            values with <code>|</code>.
+        </p>
+
+        <pre><code>[Flags]
+public enum ModifierKeys
+{
+    None = 0,
+    Ctrl = 1,
+    Shift = 2,
+    Alt = 4,
+}</code></pre>
+
+        <h3>LightingContext</h3>
+
+        <p>
+            Snapshot of the lighting values for one frame. You receive this in the
+            lighting events. You can read it and, during
+            <code>BeforeLightingSetup</code> only, modify it.
+        </p>
+
+        <pre><code>public class LightingContext
+{
+    // Mode selected in Settings, under Lighting.
+    public LightingMode Mode { get; set; }
+
+    // Center of the scene in world space.
+    public Vector3 SceneCenter { get; set; }
+
+    // Ambient colour.
+    public Vector3 AmbientLight { get; set; }
+
+    // Sun.
+    public Vector3 SunDirection { get; set; }
+    public Vector3 SunColor { get; set; }
+    public bool SunEnabled { get; set; }
+
+    // Sun shadow map, if one is active.
+    public Matrix4 LightSpaceMatrix { get; set; }
+    public int ShadowMapTexture { get; set; }
+
+    // Extra lights. The arrays are all &lt;ExtraLightCount&gt; entries long.
+    public int ExtraLightCount { get; set; }
+    public Vector3[] ExtraPositions { get; set; }
+    public Vector3[] ExtraColors { get; set; }
+    public float[] ExtraIntensities { get; set; }
+    public float[] ExtraRanges { get; set; }
+    public int[] ExtraTypes { get; set; }
+    public Vector3[] ExtraDirections { get; set; }
+    public float[] ExtraInnerCos { get; set; }
+    public float[] ExtraOuterCos { get; set; }
+    public Vector3[] ExtraAreaHalfExtents { get; set; }
+    public float[] ExtraSoftness { get; set; }
+    public Matrix3[] ExtraAreaRotations { get; set; }
+
+    // Extra shadow map bindings.
+    public int[] ExtraShadowBaseSlots { get; set; }
+    public Matrix4[] ExtraShadowLightSpaces { get; set; }
+    public int ExtraShadowMapSize { get; set; }
+    public int[] ExtraShadowTextureSlots { get; set; }
+}</code></pre>
+
+        <p>
+            <code>LightingMode</code> is defined in the editor's user settings and has
+            these values:
+        </p>
+
+        <pre><code>public enum LightingMode
+{
+    Unlit,    // no lighting at all
+    Simple,   // sun + ambient only
+    Default,  // all lights, no shadows
+    Shadowed, // all lights plus real-time shadow maps
+}</code></pre>
+
+        <h3>ExportScene</h3>
+
+        <p>
+            One layer's worth of blocks, as handed to an exporter. It is a read-only
+            snapshot taken at the moment the export starts.
+        </p>
+
+        <pre><code>public sealed class ExportScene
+{
+    public string Name { get; }
+    public IReadOnlyDictionary&lt;Vector3i, BlockData&gt; Blocks { get; }
+}</code></pre>
+
+        <h3>BlockChangedEventArgs</h3>
+
+        <p>
+            Carried by the BlockPlaced and BlockRemoved events.
+        </p>
+
+        <pre><code>public readonly struct BlockChangedEventArgs
+{
+    public string SceneName { get; }
+    public Vector3i Position { get; }
+}</code></pre>
+
+        <h3>ActiveSceneChangedEventArgs</h3>
+
+        <p>
+            Carried by the ActiveSceneChanged event. Either name may be null, for
+            example when the editor goes from a scene to no scene or the other way
+            around.
+        </p>
+
+        <pre><code>public readonly struct ActiveSceneChangedEventArgs
+{
+    public string? OldSceneName { get; }
+    public string? NewSceneName { get; }
+}</code></pre>
+
+        <h2 id="interfaces">34. Full interface reference <a class="editlink" href="#interfaces">[link]</a></h2>
+
+        <p>
+            Every interface the plugin API exposes, verbatim. If it is not listed
+            here, it is not part of the API and should not be used from a plugin.
+        </p>
+
+        <h3>IPlugin</h3>
+
+        <pre><code>public interface IPlugin
+{
+    string Name { get; }
+    string Description { get; }
+    string Author { get; }
+    string Version { get; }
+
+    void Initialize(IPluginContext context);
+    void Shutdown();
+}</code></pre>
+
+        <h3>IPluginContext</h3>
+
+        <pre><code>public interface IPluginContext
+{
+    IBlockService Blocks { get; }
+    ILayerService Layers { get; }
+    ISelectionService Selection { get; }
+    IUndoService Undo { get; }
+    IEventService Events { get; }
+    IRenderService Rendering { get; }
+    IImGuiService UI { get; }
+    ILogService Log { get; }
+    IInputService Input { get; }
+    IImportExportService ImportExport { get; }
+    ILightingService Lighting { get; }
+    IOverlayService Overlays { get; }
+    IAssetService Assets { get; }
+    IMaterialService Materials { get; }
+    IEditorService Editor { get; }
+}</code></pre>
+
+        <h3>IBlockService</h3>
+
+        <pre><code>public interface IBlockService
+{
+    bool HasBlock(Vector3i position);
+    BlockData? GetBlock(Vector3i position);
+    void PlaceBlock(Vector3i position, BlockData block);
+    void RemoveBlock(Vector3i position);
+}</code></pre>
+
+        <h3>ILayerService</h3>
+
+        <pre><code>public interface ILayerService
+{
+    int LayerCount { get; }
+    int AddLayer(string name,
+                 IReadOnlyDictionary&lt;Vector3i, BlockData&gt; blocks);
+    void SetActiveLayer(int index);
+}</code></pre>
+
+        <h3>IMaterialService</h3>
+
+        <pre><code>public interface IMaterialService
+{
+    Guid DefaultMaterialId { get; }
+    Guid PrototypeMaterialId { get; }
+
+    Guid CreateMaterial(string name,
+                        byte[] rgba,
+                        int width,
+                        int height,
+                        int tileSize);
+
+    string? GetMaterialName(Guid id);
+
+    void SavePng(byte[] rgba,
+                 int width,
+                 int height,
+                 string path);
+}</code></pre>
+
+        <h3>IEditorService</h3>
+
+        <pre><code>public interface IEditorService
+{
+    Vector2i CurrentTile { get; set; }
+    Guid CurrentMaterialId { get; set; }
+
+    bool IsWithinBounds(Vector3i position);
+    void RebuildMeshes();
+}</code></pre>
+
+        <h3>ISelectionService</h3>
+
+        <pre><code>public interface ISelectionService
+{
+    IReadOnlySet&lt;Vector3i&gt; GetSelectedBlocks();
+    void Select(IEnumerable&lt;Vector3i&gt; positions);
+    void Clear();
+
+    event Action&lt;IReadOnlySet&lt;Vector3i&gt;&gt; SelectionChanged;
+}</code></pre>
+
+        <h3>IPluginCommand</h3>
+
+        <pre><code>public interface IPluginCommand
+{
+    string Description { get; }
+    void Execute();
+    void Undo();
+}</code></pre>
+
+        <h3>IUndoService</h3>
+
+        <pre><code>public interface IUndoService
+{
+    void Execute(IPluginCommand command);
+    void Undo();
+    void Redo();
+}</code></pre>
+
+        <h3>IEventService</h3>
+
+        <pre><code>public interface IEventService
+{
+    event Action&lt;BlockChangedEventArgs&gt; BlockPlaced;
+    event Action&lt;BlockChangedEventArgs&gt; BlockRemoved;
+    event Action&lt;ActiveSceneChangedEventArgs&gt; ActiveSceneChanged;
+}</code></pre>
+
+        <h3>IPluginRenderPass</h3>
+
+        <pre><code>public interface IPluginRenderPass
+{
+    void Update(float deltaTime);
+    void Render(IPluginRenderContext context);
+}</code></pre>
+
+        <h3>IPluginRenderContext</h3>
+
+        <pre><code>public interface IPluginRenderContext
+{
+    Vector2i ScreenSize { get; }
+    Matrix4 View { get; }
+    Matrix4 Projection { get; }
+    LightingContext Lighting { get; }
+}</code></pre>
+
+        <h3>IRenderService</h3>
+
+        <pre><code>public interface IRenderService
+{
+    void AddRenderPass(IPluginRenderPass pass);
+    bool RemoveRenderPass(IPluginRenderPass pass);
+}</code></pre>
+
+        <h3>ILightingService</h3>
+
+        <pre><code>public interface ILightingService
+{
+    event Action&lt;LightingContext&gt; BeforeLightingSetup;
+    event Action&lt;LightingContext&gt; AfterLightingSetup;
+    event Action&lt;LightingContext&gt; BeforeSceneRender;
+    event Action&lt;LightingContext&gt; AfterSceneRender;
+
+    LightingContext Current { get; }
+}</code></pre>
+
+        <h3>IPluginOverlayRenderer</h3>
+
+        <pre><code>public interface IPluginOverlayRenderer
+{
+    bool Enabled { get; set; }
+    void Render(IPluginOverlayContext context);
+}</code></pre>
+
+        <h3>IPluginOverlayContext</h3>
+
+        <pre><code>public interface IPluginOverlayContext
+{
+    Vector2i ScreenSize { get; }
+    Matrix4 View { get; }
+    Matrix4 Projection { get; }
+    LightingContext? Lighting { get; }
+}</code></pre>
+
+        <h3>IOverlayService</h3>
+
+        <pre><code>public interface IOverlayService
+{
+    void AddOverlayRenderer(IPluginOverlayRenderer renderer);
+    void InsertOverlayRenderer(int index, IPluginOverlayRenderer renderer);
+    bool RemoveOverlayRenderer(IPluginOverlayRenderer renderer);
+
+    void ReplaceOverlayRenderer&lt;T&gt;(IPluginOverlayRenderer renderer)
+        where T : IPluginOverlayRenderer;
+
+    event Action&lt;IPluginOverlayContext&gt; BeforeRender;
+    event Action&lt;IPluginOverlayContext&gt; AfterRender;
+    event Action&lt;IPluginOverlayContext, IPluginOverlayRenderer&gt; BeforeRenderer;
+    event Action&lt;IPluginOverlayContext, IPluginOverlayRenderer&gt; AfterRenderer;
+}</code></pre>
+
+        <h3>IImGuiService</h3>
+
+        <pre><code>public interface IImGuiService
+{
+    void AddMenuBarItem(string label, Action action);
+    void AddWindow(string title, Action drawContent, bool? open = null);
+    bool RemoveWindow(string title);
+}</code></pre>
+
+        <h3>IInputService</h3>
+
+        <pre><code>public interface IInputService
+{
+    // Actions
+    bool IsActionPressed(string action);
+    bool IsActionHeld(string action);
+    bool IsActionReleased(string action);
+
+    string RegisterAction(string action,
+                          string category,
+                          KeyBinding defaultBinding);
+
+    string GetShortcutText(string action);
+    KeyBinding GetBinding(string action);
+    IReadOnlyDictionary&lt;string, KeyBinding&gt; GetAllActions();
+    IReadOnlyList&lt;string&gt; GetActionsInCategory(string category);
+    IReadOnlyList&lt;string&gt; GetCategories();
+
+    event Action&lt;string&gt; ActionPressed;
+    event Action&lt;string&gt; ActionReleased;
+
+    // Raw keys
+    bool IsKeyPressed(Keys key);
+    bool IsKeyHeld(Keys key);
+    bool IsKeyReleased(Keys key);
+
+    // Raw mouse
+    bool IsMouseButtonPressed(MouseButton button);
+    bool IsMouseButtonHeld(MouseButton button);
+    bool IsMouseButtonReleased(MouseButton button);
+
+    Vector2 MousePosition { get; }
+    Vector2 MouseDelta { get; }
+    float ScrollDelta { get; }
+    ModifierKeys CurrentModifiers { get; }
+}</code></pre>
+
+        <h3>ILogService</h3>
+
+        <pre><code>public interface ILogService
+{
+    void Info(string message);
+    void Warning(string message);
+    void Error(string message);
+    void Debug(string message);
+}</code></pre>
+
+        <h3>IImporter</h3>
+
+        <pre><code>public interface IImporter
+{
+    string Name { get; }
+    string[] FileExtensions { get; }
+    void Import(string filePath, IImportContext context);
+}</code></pre>
+
+        <h3>IExporter</h3>
+
+        <pre><code>public interface IExporter
+{
+    string Name { get; }
+    string[] FileExtensions { get; }
+    void Export(string filePath, IExportContext context);
+}</code></pre>
+
+        <h3>IImportContext</h3>
+
+        <pre><code>public interface IImportContext
+{
+    IBlockService Blocks { get; }
+    IMaterialService Materials { get; }
+    ILogService Log { get; }
+    string? TargetSceneName { get; }
+}</code></pre>
+
+        <h3>IExportContext</h3>
+
+        <pre><code>public interface IExportContext
+{
+    IReadOnlyList&lt;ExportScene&gt; Scenes { get; }
+    ILogService Log { get; }
+}</code></pre>
+
+        <h3>IImportExportService</h3>
+
+        <pre><code>public interface IImportExportService
+{
+    void RegisterImporter(IImporter importer);
+    void RegisterExporter(IExporter exporter);
+}</code></pre>
+
+        <h3>IAssetService</h3>
+
+        <pre><code>public interface IAssetService
+{
+    string GetAssetPath(string relativePath);
+    string GetMaterialsFolder();
+    void OpenFileDialog(string filter, Action&lt;string?&gt; onResult);
+}</code></pre>
+
+        <div class="catbar">
+            <strong>Categories:</strong>
+            <a href="#intro">Chunk Junk</a>
+            <a href="#plugin-basics">Plugins</a>
+            <a href="#context">API</a>
+            <a href="#types">Types</a>
+            <a href="#interfaces">Interfaces</a>
+            <a href="#limits">Limits</a>
+            <a href="#glossary">Reference</a>
+        </div>
 
     </main>
 </div>
 
 <script>
-    (function() {
-        const tocLinks = document.querySelectorAll('#toc-nav a[href^="#"]');
-        const sections = Array.from(document.querySelectorAll('section[id]'));
+    (function () {
+        var root  = document.documentElement;
+        var btn   = document.getElementById('themeToggle');
+        var icon  = document.getElementById('themeIcon');
+        var label = document.getElementById('themeLabel');
 
-        const linkMap = new Map();
-        tocLinks.forEach(link => {
-            const targetId = link.getAttribute('href').substring(1);
-            const section = document.getElementById(targetId);
-            if (section) {
-                linkMap.set(section, link);
-            }
-        });
+        var GLYPH_MOON = '\u263E';
+        var GLYPH_SUN  = '\u2600';
 
-        function getActiveSection() {
-            let best = null;
-            let bestRatio = 0;
-            const viewportHeight = window.innerHeight;
-            const scrollY = window.scrollY;
-            for (const section of sections) {
-                const rect = section.getBoundingClientRect();
-                const visibleTop = Math.max(0, rect.top);
-                const visibleBottom = Math.min(viewportHeight, rect.bottom);
-                const visibleHeight = Math.max(0, visibleBottom - visibleTop);
-                const ratio = visibleHeight / Math.max(1, rect.height);
-                if (ratio > 0.1) {
-                    if (!best || ratio > bestRatio) {
-                        if (ratio === bestRatio && rect.top < best.rect.top) {
-                        } else {
-                            best = { section, ratio, rect };
-                            bestRatio = ratio;
-                        }
-                    }
-                }
-            }
-            if (!best) {
-                for (const section of sections) {
-                    const rect = section.getBoundingClientRect();
-                    if (rect.top <= 100 && rect.bottom > 0) {
-                        best = { section, ratio: 0, rect };
-                        break;
-                    }
-                }
-            }
-            return best ? best.section : null;
+        function currentTheme() {
+            return root.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
         }
 
-        function updateActiveLink() {
-            const activeSection = getActiveSection();
-            tocLinks.forEach(link => link.classList.remove('active'));
-            if (activeSection && linkMap.has(activeSection)) {
-                const link = linkMap.get(activeSection);
-                link.classList.add('active');
-                const nav = document.getElementById('toc-nav');
-                const linkRect = link.getBoundingClientRect();
-                const navRect = nav.getBoundingClientRect();
-                if (linkRect.top < navRect.top || linkRect.bottom > navRect.bottom) {
-                    link.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
-                }
+        function applyTheme(theme) {
+            if (theme === 'light') {
+                root.setAttribute('data-theme', 'light');
+                icon.textContent  = GLYPH_SUN;
+                label.textContent = 'Light';
+            } else {
+                root.removeAttribute('data-theme');
+                icon.textContent  = GLYPH_MOON;
+                label.textContent = 'Dark';
             }
         }
 
-        let ticking = false;
-        window.addEventListener('scroll', function() {
-            if (!ticking) {
-                window.requestAnimationFrame(function() {
-                    updateActiveLink();
-                    ticking = false;
-                });
-                ticking = true;
+        applyTheme(currentTheme());
+
+        btn.addEventListener('click', function () {
+            var next = currentTheme() === 'light' ? 'dark' : 'light';
+            applyTheme(next);
+            try {
+                localStorage.setItem('chunkjunk-theme', next);
+            } catch (e) {
             }
         });
-
-        window.addEventListener('load', function() {
-            setTimeout(updateActiveLink, 100);
-        });
-
-        window.addEventListener('resize', updateActiveLink);
-
     })();
 </script>
+
+<script>
+    (function () {
+        var KEYWORDS = {
+            abstract:1, as:1, async:1, await:1, base:1, break:1, case:1, catch:1,
+            checked:1, class:1, const:1, continue:1, default:1, delegate:1, do:1,
+            else:1, enum:1, event:1, explicit:1, extern:1, finally:1, fixed:1,
+            for:1, foreach:1, get:1, goto:1, if:1, implicit:1, in:1, init:1,
+            interface:1, internal:1, is:1, lock:1, nameof:1, namespace:1, new:1,
+            null:1, operator:1, out:1, override:1, params:1, partial:1, private:1,
+            protected:1, public:1, readonly:1, record:1, ref:1, return:1, sealed:1,
+            set:1, sizeof:1, stackalloc:1, static:1, struct:1, switch:1, this:1,
+            throw:1, true:1, false:1, try:1, typeof:1, unchecked:1, unsafe:1,
+            using:1, value:1, virtual:1, void:1, when:1, where:1, while:1, with:1,
+            yield:1, var:1
+        };
+
+        var PRIMITIVES = {
+            bool:1, byte:1, sbyte:1, char:1, decimal:1, double:1, float:1,
+            int:1, uint:1, long:1, ulong:1, short:1, ushort:1, object:1,
+            string:1, dynamic:1
+        };
+
+        var TOKEN = /(\/\/[^\n]*|\/\*[\s\S]*?\*\/)|(\$?@?"(?:[^"\\]|\\.)*")|('(?:[^'\\]|\\.)*')|(\b\d[\w.]*\b)|([A-Za-z_]\w*)/g;
+
+        function escapeHtml(s) {
+            return s.replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;');
+        }
+
+        function wrap(cls, text) {
+            return '<span class="' + cls + '">' + escapeHtml(text) + '</span>';
+        }
+
+        function isSpace(ch) {
+            return ch === ' ' || ch === '\t' || ch === '\n' || ch === '\r';
+        }
+
+        function previousWord(src, index) {
+            var i = index - 1;
+            while (i >= 0 && isSpace(src[i])) i--;
+            var end = i + 1;
+            while (i >= 0 && /[\w]/.test(src[i])) i--;
+            return src.slice(i + 1, end);
+        }
+
+        function nextNonSpace(src, index) {
+            var i = index;
+            while (i < src.length && isSpace(src[i])) i++;
+            return src[i];
+        }
+
+        function highlight(src) {
+            var html = '';
+            var last = 0;
+            var m;
+            TOKEN.lastIndex = 0;
+
+            while ((m = TOKEN.exec(src)) !== null) {
+                html += escapeHtml(src.slice(last, m.index));
+                last = TOKEN.lastIndex;
+
+                if (m[1]) {
+                    html += wrap('tok-comment', m[1]);
+                } else if (m[2] || m[3]) {
+                    html += wrap('tok-string', m[2] || m[3]);
+                } else if (m[4]) {
+                    html += wrap('tok-number', m[4]);
+                } else {
+                    var word = m[5];
+                    var isMember = src[m.index - 1] === '.';
+                    var followedByParen = nextNonSpace(src, last) === '(';
+                    var prev = previousWord(src, m.index);
+
+                    if (KEYWORDS[word]) {
+                        html += wrap('tok-keyword', word);
+                    } else if (PRIMITIVES[word]) {
+                        html += wrap('tok-type', word);
+                    } else if (isMember) {
+                        html += followedByParen ? wrap('tok-fn', word) : escapeHtml(word);
+                    } else if (followedByParen && prev !== 'new') {
+                        html += wrap('tok-fn', word);
+                    } else if (/^[A-Z]/.test(word)) {
+                        html += wrap('tok-type', word);
+                    } else {
+                        html += escapeHtml(word);
+                    }
+                }
+            }
+
+            html += escapeHtml(src.slice(last));
+            return html;
+        }
+
+        function run() {
+            var blocks = document.querySelectorAll('pre > code');
+            for (var i = 0; i < blocks.length; i++) {
+                var el = blocks[i];
+                if (el.getAttribute('data-highlighted') === 'yes') continue;
+                el.innerHTML = highlight(el.textContent);
+                el.setAttribute('data-highlighted', 'yes');
+            }
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', run);
+        } else {
+            run();
+        }
+    })();
+</script>
+
 </body>
 </html>
